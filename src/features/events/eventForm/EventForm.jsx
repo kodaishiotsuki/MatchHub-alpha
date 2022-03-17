@@ -2,14 +2,16 @@ import cuid from "cuid";
 import React, { useState } from "react";
 import { Button, Form, Header, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { createEvent } from "../eventActions";
+import { updateEvent } from "../eventActions";
 
-export default function EventForm({
-  setFormOpen,
-  setEvents,
-  createEvent,
-  selectedEvent,
-  updatedEvent,
-}) {
+export default function EventForm({ match, history }) {
+  const dispatch = useDispatch();
+  const selectedEvent = useSelector((state) =>
+    state.event.events.find((e) => e.id === match.params.id)
+  );
   //inputフォーム
   const initialValues = selectedEvent ?? {
     title: "",
@@ -24,15 +26,17 @@ export default function EventForm({
   function handleFormSubmit() {
     //イベント更新 or 新規イベント
     selectedEvent
-      ? updatedEvent({ ...selectedEvent, ...values })
-      : createEvent({
-          ...values,
-          id: cuid(),
-          hostedBy: "Bob",
-          attendees: [],
-          hostPhotoURL: "/assets/user.png",
-        });
-    setFormOpen(false);
+      ? dispatch(updateEvent({ ...selectedEvent, ...values }))
+      : dispatch(
+          createEvent({
+            ...values,
+            id: cuid(),
+            hostedBy: "Bob",
+            attendees: [],
+            hostPhotoURL: "/assets/user.png",
+          })
+        );
+    history.push("/events"); //入力送信後にeventページへ遷移
   }
   //onChangeイベント e.target.valueをオブジェクトにまとめる
   function handleInputChange(e) {

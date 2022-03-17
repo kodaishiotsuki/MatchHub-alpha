@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Comment, Form, Header, Segment } from "semantic-ui-react";
 
-export default function EventDetailedChat() {
+export default function EventDetailedChat({event}) {
   return (
     <>
       <Segment
