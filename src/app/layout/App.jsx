@@ -7,12 +7,14 @@ import EventForm from "../../features/events/eventForm/EventForm";
 import HomePage from "../../features/Home/HomePage";
 import NavBar from "../../features/nav/NavBar";
 import Sandbox from "../../features/sandbox/Sandbox";
+import ModalManager from "../common/modals/ModalManager";
 import "./styles.css";
 
 function App() {
   const { key } = useLocation();
   return (
     <>
+      <ModalManager />
       <Route exact path='/' component={HomePage} />
       <Route
         //Homeページでナビゲーションバーを非表示にする
