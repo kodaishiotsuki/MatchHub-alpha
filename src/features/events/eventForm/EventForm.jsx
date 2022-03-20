@@ -1,12 +1,10 @@
 /* global google */
-import cuid from "cuid";
-import React from "react";
-import { Button, Header, Segment } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Button, Confirm, Header, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { createEvent } from "../eventActions";
-import { updateEvent } from "../eventActions";
+import { listenToEvents } from "../eventActions";
 
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -16,12 +14,28 @@ import MySelectInput from "../../../app/common/form/MySelectInput";
 import { categoryData } from "../../../app/api/categoryOptions";
 import MyDateInput from "../../../app/common/form/MyDateInput";
 import MyPlaceInput from "../../../app/common/form/MyPlaceInput";
+import {
+  addEventToFirestore,
+  cancelEventToggle,
+  listenToEventFromFirestore,
+  updateEventInFirestore,
+} from "../../../app/firestore/firestoreService";
+import useFirestoreDoc from "../../../app/hooks/useFirestoreDoc";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { Redirect } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function EventForm({ match, history }) {
   const dispatch = useDispatch();
+
+  const [loadingCancel, setLoadingCancel] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
   const selectedEvent = useSelector((state) =>
     state.event.events.find((e) => e.id === match.params.id)
   );
+  const { loading, error } = useSelector((state) => state.async);
+
   //inputフォーム
   const initialValues = selectedEvent ?? {
     title: "",
@@ -52,22 +66,31 @@ export default function EventForm({ match, history }) {
     date: Yup.string().required("You must provide date"),
   });
 
-  // //送信ボタン
-  // function handleFormSubmit() {
-  //   //イベント更新 or 新規イベント
-  //   selectedEvent
-  //     ? dispatch(updateEvent({ ...selectedEvent, ...values }))
-  //     : dispatch(
-  //         createEvent({
-  //           ...values,
-  //           id: cuid(),
-  //           hostedBy: "Bob",
-  //           attendees: [],
-  //           hostPhotoURL: "/assets/user.png",
-  //         })
-  //       );
-  //   history.push("/events"); //入力送信後にeventページへ遷移
-  // }
+  //
+  async function handleCancelToggle(event) {
+    setConfirmOpen(false);
+    setLoadingCancel(true);
+    try {
+      await cancelEventToggle(event);
+      setLoadingCancel(false);
+    } catch (error) {
+      setLoadingCancel(true);
+      toast.error(error.message);
+    }
+  }
+
+  //eventsコレクションのidに紐付ける(データの受け取り)
+  useFirestoreDoc({
+    shouldExecute: !!match.params.id,
+    query: () => listenToEventFromFirestore(match.params.id),
+    data: (event) => dispatch(listenToEvents([event])),
+    deps: [match.params.id, dispatch],
+  });
+  //loading表示
+  if (loading) return <LoadingComponent content='Loading event...' />;
+
+  //エラーが発生した場合はリダイレクト
+  if (error) return <Redirect to='/error' />;
 
   return (
     <Segment clearing>
@@ -75,20 +98,17 @@ export default function EventForm({ match, history }) {
       <Formik
         validationSchema={validationSchema}
         initialValues={initialValues}
-        onSubmit={(values) => {
-          //イベント更新 or 新規イベント
-          selectedEvent
-            ? dispatch(updateEvent({ ...selectedEvent, ...values }))
-            : dispatch(
-                createEvent({
-                  ...values,
-                  id: cuid(),
-                  hostedBy: "Bob",
-                  attendees: [],
-                  hostPhotoURL: "/assets/user.png",
-                })
-              );
-          history.push("/events"); //入力送信後にeventページへ遷移
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            //イベント更新 or 新規イベント
+            selectedEvent
+              ? await updateEventInFirestore(values)
+              : await addEventToFirestore(values);
+            history.push("/events"); //入力送信後にeventページへ遷移
+          } catch (error) {
+            toast.error(error.message);
+            setSubmitting(false);
+          }
         }}
       >
         {({ isSubmitting, dirty, isValid, values }) => (
@@ -122,6 +142,19 @@ export default function EventForm({ match, history }) {
               dateFormat='MMMM d, yyyy h:mm a'
             />
 
+            {selectedEvent && (
+              <Button
+                loading={loadingCancel}
+                type='button'
+                floated='left'
+                color={selectedEvent.isCancelled ? "green" : "red"}
+                content={
+                  selectedEvent.isCancelled ? "Reactive Event" : "Cancel Event"
+                }
+                onClick={() => setConfirmOpen(true)}
+              />
+            )}
+
             <Button
               loading={isSubmitting}
               disabled={!isValid || !dirty || isSubmitting}
@@ -141,6 +174,16 @@ export default function EventForm({ match, history }) {
           </Form>
         )}
       </Formik>
+      <Confirm
+        content={
+          selectedEvent.isCancelled
+            ? "This will reactive the event - are you sure?"
+            : "This will cancel the event - are you sure?"
+        }
+        open={confirmOpen}
+        onCancel={() => setConfirmOpen(false)}
+        onConfirm={() => handleCancelToggle(selectedEvent)}
+      />
     </Segment>
   );
 }

@@ -10,13 +10,14 @@ import Sandbox from "../../features/sandbox/Sandbox";
 import ModalManager from "../common/modals/ModalManager";
 import "./styles.css";
 import { ToastContainer } from "react-toastify";
+import ErrorComponent from "../common/errors/ErrorComponent";
 
 function App() {
   const { key } = useLocation();
   return (
     <>
       <ModalManager />
-      <ToastContainer position='bottom-right' hideProgressBar/>
+      <ToastContainer position='bottom-right' hideProgressBar />
       <Route exact path='/' component={HomePage} />
       <Route
         //Homeページでナビゲーションバーを非表示にする
@@ -34,6 +35,7 @@ function App() {
                 path={["/createEvent", "/manage/:id"]}
                 component={EventForm}
               />
+              <Route path='/error' component={ErrorComponent} />
             </Container>
           </>
         )}

@@ -11,6 +11,7 @@ import {
   UPDATE_EVENT,
 } from "./eventConstants";
 
+//loading
 export function loadEvents() {
   return async function (dispatch) {
     dispatch(asyncActionStart());
@@ -24,6 +25,15 @@ export function loadEvents() {
   };
 }
 
+//イベントを表示
+export function listenToEvents(events) {
+  return {
+    type: FETCH_EVENTS,
+    payload: events,
+  };
+}
+
+//イベント
 export function createEvent(event) {
   return {
     type: CREATE_EVENT,

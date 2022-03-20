@@ -1,15 +1,40 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import { listenToEventFromFirestore } from "../../../app/firestore/firestoreService";
+import useFirestoreDoc from "../../../app/hooks/useFirestoreDoc";
+import { listenToEvents } from "../eventActions";
 import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedInfo from "./EventDetailedInfo";
 import EventDetailedSidebar from "./EventDetailedSidebar";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 export default function EventDetailedPage({ match }) {
+  const dispatch = useDispatch();
+  //useSelectorでstoreから呼び出し
   const event = useSelector((state) =>
     state.event.events.find((e) => e.id === match.params.id)
   );
+  //loading redux
+  const { loading, error } = useSelector((state) => state.async);
+
+  //eventsコレクションのidに紐付ける(データの受け取り)
+  useFirestoreDoc({
+    query: () => listenToEventFromFirestore(match.params.id),
+    data: (event) => dispatch(listenToEvents([event])),
+    deps: [match.params.id, dispatch],
+  });
+
+  //loading表示
+  if (loading || (!event && !error))
+    return <LoadingComponent content='Loading event...' />;
+
+  //エラーが発生した場合はリダイレクト
+  if (error) return <Redirect to='/error' />;
+
   return (
     <Grid>
       <Grid.Column width={10}>
@@ -18,7 +43,7 @@ export default function EventDetailedPage({ match }) {
         <EventDetailedChat />
       </Grid.Column>
       <Grid.Column width={6}>
-        <EventDetailedSidebar attendees={event.attendees} />
+        <EventDetailedSidebar attendees={event?.attendees} />
       </Grid.Column>
     </Grid>
   );
