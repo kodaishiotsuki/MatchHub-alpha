@@ -76,3 +76,23 @@ export function setUserProfileData(user) {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
 }
+
+//ユーザープロフィール
+export function getUserProfile(userId) {
+  return db.collection("users").doc(userId);
+}
+
+//プロフィール更新(displayNameで判別)
+export async function updateUserProfile(profile) {
+  const user = firebase.auth().currentUser;
+  try {
+    if (user.displayName !== profile.displayName) {
+      await user.updateProfile({
+        displayName: profile.displayName,
+      });
+    }
+    return await db.collection("users").doc(user.uid).update(profile);
+  } catch (error) {
+    throw error;
+  }
+}
