@@ -63,3 +63,16 @@ export function cancelEventToggle(event) {
     isCancelled: !event.isCancelled,
   });
 }
+
+//新規登録時のユーザー設定
+export function setUserProfileData(user) {
+  return db
+    .collection("users")
+    .doc(user.uid)
+    .set({
+      displayName: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL || null,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+}
