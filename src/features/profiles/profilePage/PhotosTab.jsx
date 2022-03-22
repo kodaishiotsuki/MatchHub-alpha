@@ -3,15 +3,20 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Button, Grid, Header, Tab, Card, Image } from "semantic-ui-react";
 import PhotoUploadWidget from "../../../app/common/photos/PhotoUploadWidget";
-import { getUserPhotos } from "../../../app/firestore/firestoreService";
+import {
+  getUserPhotos,
+  setMainPhoto,
+} from "../../../app/firestore/firestoreService";
 import useFirestoreCollection from "../../../app/hooks/useFirestoreCollection";
 import { listenToUserPhotos } from "../profileActions";
+import { toast } from "react-toastify";
 
 export default function PhotosTab({ profile, isCurrentUser }) {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const { loading } = useSelector((state) => state.async); //rootReducer
   const { photos } = useSelector((state) => state.profile); //rootReducer
+  const [updating, setUpdating] = useState({ isUpdating: false, target: null });
 
   //firestore DBを使うために必要
   useFirestoreCollection({
@@ -19,6 +24,18 @@ export default function PhotosTab({ profile, isCurrentUser }) {
     data: (photos) => dispatch(listenToUserPhotos(photos)), //Redux action
     deps: [profile.id, dispatch], //依存関係
   });
+
+  //プロフ写真の更新
+  async function handleSetMainPhoto(photo, target) {
+    setUpdating({ isUpdating: true, target });
+    try {
+      await setMainPhoto(photo); //←firestoreService.js
+    } catch (error) {
+      toast.error(error.message); //アラート機能
+    } finally {
+      setUpdating({ isUpdating: false, target: null });
+    }
+  }
 
   return (
     <Tab.Pane loading={loading}>
@@ -44,7 +61,16 @@ export default function PhotosTab({ profile, isCurrentUser }) {
                 <Card key={photo.id}>
                   <Image src={photo.url} />
                   <Button.Group>
-                    <Button basic color='green' content='Main' />
+                    <Button
+                      name={photo.id}
+                      loading={
+                        updating.isUpdating && updating.target === photo.id
+                      }
+                      onClick={(e) => handleSetMainPhoto(photo, e.target.name)}
+                      basic
+                      color='green'
+                      content='Main'
+                    />
                     <Button basic color='red' icon='trash' />
                   </Button.Group>
                 </Card>
