@@ -61,3 +61,12 @@ export function uploadToFirebaseStorage(file, filename) {
   const storageRef = firebase.storage().ref();
   return storageRef.child(`${user.uid}/user_images/${filename}`).put(file);
 }
+
+//storage削除
+export function deleteFromFirebaseStorage(filename) {
+  //写真のidじゃなく名前を取得し削除する
+  const userUid = firebase.auth().currentUser.uid;
+  const storageRef = firebase.storage().ref();
+  const photoRef = storageRef.child(`${userUid}/user_images/${filename}`);
+  return photoRef.delete();
+}
