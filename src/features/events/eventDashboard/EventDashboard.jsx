@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid } from "semantic-ui-react";
 import EventList from "./EventList";
 import { useSelector } from "react-redux";
@@ -16,12 +16,24 @@ const EventDashboard = () => {
   //dispatch(listenToEvents)
   const dispatch = useDispatch();
 
+  //多分使わない機能
+  //
+  const [predicate, setPredicate] = useState(
+    new Map([
+      // ["startDate", new Date()],
+      ["filter", "all"],
+    ])
+  );
+  //
+  function handleSetPredicate(key, value) {
+    setPredicate(new Map(predicate.set(key, value)));
+  }
 
   //DBから取得
   useFirestoreCollection({
-    query: () => listenToEventsFromFirestore(), //eventsコレクション
+    query: () => listenToEventsFromFirestore(predicate), //eventsコレクション
     data: (events) => dispatch(listenToEvents(events)),
-    deps: [dispatch],
+    deps: [dispatch, predicate],
   });
 
   return (
@@ -35,7 +47,11 @@ const EventDashboard = () => {
         <EventList events={events} />
       </Grid.Column>
       <Grid.Column width={6}>
-        <EventFilter />
+        <EventFilter
+          predicate={predicate}
+          setPredicate={handleSetPredicate}
+          loading={loading}
+        />
       </Grid.Column>
     </Grid>
   );

@@ -24,8 +24,22 @@ export function dataFromSnapshot(snapshot) {
 }
 
 //eventsコレクションへDB接続
-export function listenToEventsFromFirestore() {
-  return db.collection("events").orderBy("date");
+export function listenToEventsFromFirestore(predicate) {
+  const user = firebase.auth().currentUser;
+  let eventsRef = db.collection("events");
+  switch (predicate.get("filter")) {
+    case "engineer":
+      eventsRef.where("subTitle", "==", "エンジニア");
+        // eventsRef.where("subTitle2", "==", "エンジニア");
+    case "designer":
+      return eventsRef.where("subTitle", "==", "デザイナー");
+    case "isHosting":
+      return eventsRef.where("hostUid", "==", user.uid);
+    // .where("date", ">=", predicate.get("startDate"));
+    default:
+      return eventsRef;
+    // return eventsRef.where("date", ">=", predicate.get("startDate"));
+  }
 }
 
 //eventsコレクションへDB接続(idバージョン)

@@ -13,7 +13,14 @@ export default function EventListItem({ event }) {
           <Item>
             <Item.Image size='tiny' circular src={event.hostPhotoURL} />
             <Item.Content>
-              <Item.Header content={event.title} />
+              <Item.Header content={event.title} size='large' />
+              <br />
+              <Item.Content className='ui teal tag label'>
+                {event.subTitle}
+              </Item.Content>
+              <Item.Content className='ui teal tag label'>
+                {event.subTitle2}
+              </Item.Content>
               <Item.Description>
                 Hosted by
                 <Link to={`/profile/${event.hostUid}`}> {event.hostedBy}</Link>

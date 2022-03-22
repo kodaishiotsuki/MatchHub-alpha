@@ -39,6 +39,8 @@ export default function EventForm({ match, history }) {
   //inputフォーム
   const initialValues = selectedEvent ?? {
     title: "",
+    subTitle: "",
+    subTitle2:"",
     category: "",
     description: "",
     city: {
@@ -55,6 +57,7 @@ export default function EventForm({ match, history }) {
   //入力画面バリデーション
   const validationSchema = Yup.object({
     title: Yup.string().required("You must provide title"),
+    subTitle: Yup.string().required("You must provide subTitle"),
     category: Yup.string().required("You must provide category"),
     description: Yup.string().required("You must provide description"),
     city: Yup.object().shape({
@@ -115,6 +118,8 @@ export default function EventForm({ match, history }) {
           <Form className='ui form'>
             <Header sub color='teal' content='Event Details' />
             <MyTextInput name='title' placeholder='Event title' />
+            <MyTextInput name='subTitle' placeholder='Sub title' />
+            <MyTextInput name='subTitle2' placeholder='Sub title2' />
             <MySelectInput
               name='category'
               placeholder='Category'
