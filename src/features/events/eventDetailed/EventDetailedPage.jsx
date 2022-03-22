@@ -14,12 +14,18 @@ import { Redirect } from "react-router-dom";
 
 export default function EventDetailedPage({ match }) {
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.auth);
   //useSelectorでstoreから呼び出し
   const event = useSelector((state) =>
     state.event.events.find((e) => e.id === match.params.id)
   );
   //loading redux
   const { loading, error } = useSelector((state) => state.async);
+
+  //eventのホスト
+  const isHost = event?.hostUid === currentUser.uid;
+  //eventの参加者（メンバー）
+  const isGoing = event?.attendees?.some((a) => a.id === currentUser.uid);
 
   //eventsコレクションのidに紐付ける(データの受け取り)
   useFirestoreDoc({
@@ -38,7 +44,7 @@ export default function EventDetailedPage({ match }) {
   return (
     <Grid>
       <Grid.Column width={10}>
-        <EventDetailedHeader event={event} />
+        <EventDetailedHeader event={event} isGoing={isGoing} isHost={isHost} />
         <EventDetailedInfo event={event} />
         <EventDetailedChat />
       </Grid.Column>

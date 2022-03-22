@@ -33,17 +33,20 @@ export function listenToEventFromFirestore(eventId) {
   return db.collection("events").doc(eventId);
 }
 
-//firestore作成関数
+//firestore作成関数(eventsコレクションに参加者を追加する)
 export function addEventToFirestore(event) {
+  const user = firebase.auth().currentUser;
   return db.collection("events").add({
     ...event,
-    hostedBy: "Diana",
-    hostPhotoURL: "https://randomuser.me/api/portraits/women/20.jpg",
+    hostUid:user.uid,
+    hostedBy: user.displayName,
+    hostPhotoURL: user.photoURL || null,
     attendees: firebase.firestore.FieldValue.arrayUnion({
-      id: cuid(),
-      displayName: "Diana",
-      photoURL: "https://randomuser.me/api/portraits/women/20.jpg",
+      id: user.uid,
+      displayName: user.displayName,
+      photoURL: user.photoURL || null,
     }),
+    attendeesIds:firebase.firestore.FieldValue.arrayUnion(user.uid)
   });
 }
 

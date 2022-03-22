@@ -16,7 +16,7 @@ const eventImageTextStyle = {
   color: "white",
 };
 
-export default function EventDetailedHeader({ event }) {
+export default function EventDetailedHeader({ event, isGoing, isHost }) {
   return (
     <Segment.Group>
       <Segment basic attached='top' style={{ padding: "0" }}>
@@ -45,18 +45,28 @@ export default function EventDetailedHeader({ event }) {
         </Segment>
       </Segment>
 
-      <Segment attached='bottom'>
-        <Button>Cancel My Place</Button>
-        <Button color='teal'>JOIN THIS EVENT</Button>
+      <Segment attached='bottom' clearing>
+        {!isHost && (
+          <>
+            {isGoing ? (
+              <Button>Cancel My Place</Button>
+            ) : (
+              <Button color='teal'>JOIN THIS EVENT</Button>
+            )}
+          </>
+        )}
 
-        <Button
-          as={Link}
-          to={`/manage/${event.id}`}
-          color='orange'
-          floated='right'
-        >
-          Manage Event
-        </Button>
+        {/* イベントホストのみ編集可能 */}
+        {isHost && (
+          <Button
+            as={Link}
+            to={`/manage/${event.id}`}
+            color='orange'
+            floated='right'
+          >
+            Manage Event
+          </Button>
+        )}
       </Segment>
     </Segment.Group>
   );
