@@ -38,7 +38,7 @@ export function addEventToFirestore(event) {
   const user = firebase.auth().currentUser;
   return db.collection("events").add({
     ...event,
-    hostUid:user.uid,
+    hostUid: user.uid,
     hostedBy: user.displayName,
     hostPhotoURL: user.photoURL || null,
     attendees: firebase.firestore.FieldValue.arrayUnion({
@@ -46,7 +46,7 @@ export function addEventToFirestore(event) {
       displayName: user.displayName,
       photoURL: user.photoURL || null,
     }),
-    attendeesIds:firebase.firestore.FieldValue.arrayUnion(user.uid)
+    attendeesIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
   });
 }
 
@@ -152,4 +152,40 @@ export function deletePhotoFromCollection(photoId) {
     .collection("photos")
     .doc(photoId)
     .delete();
+}
+
+//参加者追加（会社のメンバー追加）
+export function addUserAttendance(event) {
+  const user = firebase.auth().currentUser;
+  return db
+    .collection("events")
+    .doc(event.id)
+    .update({
+      attendees: firebase.firestore.FieldValue.arrayUnion({
+        id: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL || null,
+      }),
+      attendeesIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
+    });
+}
+
+//参加者キャンセル（会社のメンバー削除）
+export async function cancelUserAttendance(event) {
+  const user = firebase.auth().currentUser;
+  try {
+    //参加中のメンバーを取得
+    const eventDoc = await db.collection("events").doc(event.id).get();
+    return db
+      .collection("events")
+      .doc(event.id)
+      .update({
+        attendeesIds: firebase.firestore.FieldValue.arrayRemove(user.uid),
+        attendees: eventDoc
+          .data()
+          .attendees.filter((attendee) => attendee.id !== user.uid),
+      });
+  } catch (error) {
+    throw error;
+  }
 }
