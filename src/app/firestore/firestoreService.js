@@ -119,3 +119,8 @@ export async function updateUserProfilePhoto(downloadURL, filename) {
     throw error;
   }
 }
+
+//ユーザーの写真を取得
+export function getUserPhotos(userUid) {
+  return db.collection("users").doc(userUid).collection("photos");
+}
