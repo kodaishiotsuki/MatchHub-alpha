@@ -16,15 +16,13 @@ const EventDashboard = () => {
   //dispatch(listenToEvents)
   const dispatch = useDispatch();
 
-  //多分使わない機能
-  //
+  //フィルター機能
   const [predicate, setPredicate] = useState(
     new Map([
       // ["startDate", new Date()],
       ["filter", "all"],
     ])
   );
-  //
   function handleSetPredicate(key, value) {
     setPredicate(new Map(predicate.set(key, value)));
   }

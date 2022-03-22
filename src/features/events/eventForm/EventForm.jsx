@@ -43,6 +43,7 @@ export default function EventForm({ match, history }) {
     subTitle2:"",
     category: "",
     description: "",
+    pitch:"",
     city: {
       address: "",
       latLng: null,
@@ -120,6 +121,7 @@ export default function EventForm({ match, history }) {
             <MyTextInput name='title' placeholder='Event title' />
             <MyTextInput name='subTitle' placeholder='Sub title' />
             <MyTextInput name='subTitle2' placeholder='Sub title2' />
+            <MyTextInput name='pitch' placeholder='pitch' />
             <MySelectInput
               name='category'
               placeholder='Category'
@@ -141,10 +143,7 @@ export default function EventForm({ match, history }) {
             <MyDateInput
               name='date'
               placeholder='Event date'
-              timeFormat='HH:mm'
-              showTimeSelect
-              timeCaption='time'
-              dateFormat='MMMM d, yyyy h:mm a'
+              dateFormat='yyyy/MM/dd '
             />
 
             {selectedEvent && (

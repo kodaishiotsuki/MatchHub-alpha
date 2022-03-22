@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Header, Image, Item, Segment } from "semantic-ui-react";
-import { format } from "date-fns";
 import { toast } from "react-toastify";
 import {
   addUserAttendance,
@@ -66,9 +65,11 @@ export default function EventDetailedHeader({ event, isGoing, isHost }) {
                   content={event.title}
                   style={{ color: "white" }}
                 />
-                <p>{format(event.date, "MMMM d, yyyy h:mm a")}</p>
+                {/* <p>{format(event.date, "MMMM d, yyyy h:mm a")}</p> */}
+                <br />
+                <br />
                 <p>
-                  Hosted by{" "}
+                  Foundered by{" "}
                   <strong>
                     <Link to={`/profile/${event.hostUid}`}>
                       {event.hostedBy}

@@ -22,7 +22,7 @@ export default function EventListItem({ event }) {
                 {event.subTitle2}
               </Item.Content>
               <Item.Description>
-                Hosted by
+                Foundered by
                 <Link to={`/profile/${event.hostUid}`}> {event.hostedBy}</Link>
               </Item.Description>
               {event.isCancelled && (
@@ -39,8 +39,9 @@ export default function EventListItem({ event }) {
       </Segment>
       <Segment>
         <span>
-          <Icon name='clock' />
-          {format(event.date, "MMMM d, yyyy h:mm a")}
+          <Icon name='building' />
+          {format(event.date, "yyyy/MM/dd ")}
+          <br />
           <Icon name='marker' />
           {event.venue.address}
         </span>

@@ -29,8 +29,7 @@ export function listenToEventsFromFirestore(predicate) {
   let eventsRef = db.collection("events");
   switch (predicate.get("filter")) {
     case "engineer":
-      eventsRef.where("subTitle", "==", "エンジニア");
-        // eventsRef.where("subTitle2", "==", "エンジニア");
+      return eventsRef.where("subTitle", "==", "エンジニア");
     case "designer":
       return eventsRef.where("subTitle", "==", "デザイナー");
     case "isHosting":

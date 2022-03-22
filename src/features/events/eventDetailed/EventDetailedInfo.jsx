@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Grid, Icon, Segment } from "semantic-ui-react";
 import { format } from "date-fns";
 import EventDetailedMap from "./EventDetailedMap";
+import { Link } from "react-router-dom";
 
 export default function EventDetailedInfo({ event }) {
   const [mapOpen, setMapOpen] = useState(false);
@@ -17,13 +18,27 @@ export default function EventDetailedInfo({ event }) {
           </Grid.Column>
         </Grid>
       </Segment>
+
       <Segment attached>
         <Grid verticalAlign='middle'>
           <Grid.Column width={1}>
-            <Icon name='calendar' size='large' color='teal' />
+            <Icon name='video' size='large' color='teal' />
+          </Grid.Column>
+          <Grid.Column width={11}>
+            <span>
+              <a href={event.pitch}>{`${event.title}` + "の紹介"}</a>
+            </span>
+          </Grid.Column>
+        </Grid>
+      </Segment>
+
+      <Segment attached>
+        <Grid verticalAlign='middle'>
+          <Grid.Column width={1}>
+            <Icon name='building' size='large' color='teal' />
           </Grid.Column>
           <Grid.Column width={15}>
-            <span>{format(event.date, "MMMM d, yyyy h:mm a")}</span>
+            <span>{format(event.date, "yyyy/MM/dd ")}</span>
           </Grid.Column>
         </Grid>
       </Segment>

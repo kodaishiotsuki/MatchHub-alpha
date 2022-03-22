@@ -13,8 +13,7 @@ export default function EventDetailedSidebar({ attendees, hostUid }) {
         inverted
         color='teal'
       >
-        {attendees.length}
-        {attendees.length > 1 ? "人" : "人"} のメンバー
+        {attendees.length} Member
       </Segment>
       <Segment attached>
         <Item.Group relaxed divided>
@@ -30,7 +29,7 @@ export default function EventDetailedSidebar({ attendees, hostUid }) {
                   style={{ position: "absolute" }}
                   color='orange'
                   ribbon='right'
-                  content='代表者'
+                  content='Foundered'
                 />
               )}
               <Item.Image
