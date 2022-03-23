@@ -1,5 +1,13 @@
 import React from "react";
-import { Button, Icon, Item, Label, List, Segment } from "semantic-ui-react";
+import {
+  Button,
+  Icon,
+  Image,
+  Item,
+  Label,
+  List,
+  Segment,
+} from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import EventListAttend from "./EventListAttend";
 import { format } from "date-fns";
@@ -11,7 +19,7 @@ export default function EventListItem({ event }) {
       <Segment>
         <Item.Group>
           <Item>
-            <Item.Image size='tiny' circular src={event.hostPhotoURL} />
+            <Image size='small' rounded src={event.hostPhotoURL} />
             <Item.Content>
               <Item.Header content={event.title} size='large' />
               <br />

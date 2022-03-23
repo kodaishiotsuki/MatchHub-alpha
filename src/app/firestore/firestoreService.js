@@ -218,3 +218,16 @@ export function getUserEventsQuery(activeTab, userUid) {
         .orderBy("date");
   }
 }
+
+//チャット機能
+export function addEventChatComment(eventId, comment) {
+  const user = firebase.auth().currentUser;
+  const newComment = {
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+    uid: user.uid,
+    text: comment,
+    date: Date.now(),
+  };
+  return firebase.database().ref(`chat/${eventId}`).push(newComment);
+}

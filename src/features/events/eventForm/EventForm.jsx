@@ -40,10 +40,10 @@ export default function EventForm({ match, history }) {
   const initialValues = selectedEvent ?? {
     title: "",
     subTitle: "",
-    subTitle2:"",
+    subTitle2: "",
     category: "",
     description: "",
-    pitch:"",
+    pitch: "",
     city: {
       address: "",
       latLng: null,
@@ -117,18 +117,18 @@ export default function EventForm({ match, history }) {
       >
         {({ isSubmitting, dirty, isValid, values }) => (
           <Form className='ui form'>
-            <Header sub color='teal' content='Event Details' />
-            <MyTextInput name='title' placeholder='Event title' />
+            <Header sub color='teal' content='Company Details' />
+            <MyTextInput name='title' placeholder='Company name' />
             <MyTextInput name='subTitle' placeholder='Sub title' />
             <MyTextInput name='subTitle2' placeholder='Sub title2' />
-            <MyTextInput name='pitch' placeholder='pitch' />
+            <MyTextInput name='pitch' placeholder="Push the pitch's URL" />
             <MySelectInput
               name='category'
               placeholder='Category'
               options={categoryData}
             />
-            <MyTextArea name='description' placeholder='Description' rows={3} />
-            <Header sub color='teal' content='Event Location Details' />
+            <MyTextArea name='description' placeholder='Description' rows={5} />
+            <Header sub color='teal' content='Company Location Details' />
             <MyPlaceInput name='city' placeholder='City' />
             <MyPlaceInput
               name='venue'
@@ -142,8 +142,8 @@ export default function EventForm({ match, history }) {
             />
             <MyDateInput
               name='date'
-              placeholder='Event date'
-              dateFormat='yyyy/MM/dd '
+              placeholder='Date of founded'
+              dateFormat='yyyy/MM/dd'
             />
 
             {selectedEvent && (
