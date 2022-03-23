@@ -219,7 +219,7 @@ export function getUserEventsQuery(activeTab, userUid) {
   }
 }
 
-//チャット機能
+//チャット機能をDBに保存
 export function addEventChatComment(eventId, comment) {
   const user = firebase.auth().currentUser;
   const newComment = {
@@ -230,4 +230,9 @@ export function addEventChatComment(eventId, comment) {
     date: Date.now(),
   };
   return firebase.database().ref(`chat/${eventId}`).push(newComment);
+}
+
+//DBからチャット内容を出力
+export function getEventChatRef(eventId) {
+  return firebase.database().ref(`chat/${eventId}`).orderByKey();
 }

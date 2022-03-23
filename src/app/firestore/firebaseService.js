@@ -2,6 +2,15 @@ import firebase from "../config/firebase";
 import { setUserProfileData } from "./firestoreService";
 import { toast } from "react-toastify";
 
+//firebaseオブジェクト配列
+export function firebaseObjectToArray(snapshot) {
+  return Object.entries(snapshot).map(
+    (e) => Object.assign({}, e[1], { id: e[0] })
+    //第一引数に無名オブジェクトを指定することで、コピーした内容の新規オブジェクトを作成できる。
+    //第二引数にe[1]を指定,第三引数id: e[0]を指定することで、一つのオブジェクトにまとめることができる(id= e[0])
+  );
+}
+
 //signIn
 export function signInWithEmail(creds) {
   return firebase
@@ -54,7 +63,6 @@ export function updateUserPassword(creds) {
   const user = firebase.auth().currentUser;
   return user.updatePassword(creds.newPassword1);
 }
-
 
 //storageへアップロード(ユーザー)
 export function uploadToFirebaseStorage(file, filename) {

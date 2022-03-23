@@ -34,6 +34,7 @@ export default function EventDetailedSidebar({ attendees, hostUid }) {
               )}
               <Item.Image
                 size='tiny'
+                circular
                 src={attendee.photoURL || "/assets/user.png"}
               />
               <Item.Content verticalAlign='middle'>
