@@ -31,7 +31,7 @@ export default function AboutTab({ profile, isCurrentUser }) {
             <>
               <div style={{ marginBottom: 10 }}>
                 <strong>
-                  Member since:{format(profile.createdAt, "dd MMM yyyy")}
+                  Member since:{format(profile.createdAt, "yyyy/MM/dd")}
                 </strong>
                 <div>{profile.description || null}</div>
               </div>

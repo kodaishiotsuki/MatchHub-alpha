@@ -25,7 +25,7 @@ export default function EventDetailedInfo({ event }) {
           </Grid.Column>
           <Grid.Column width={11}>
             <span>
-              <a href={event.pitch}>{`${event.title} + "の紹介"`}</a>
+              <a href={event.pitch}>{`${event.title}の紹介`}</a>
             </span>
           </Grid.Column>
         </Grid>
