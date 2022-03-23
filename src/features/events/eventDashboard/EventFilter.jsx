@@ -1,6 +1,5 @@
 import React from "react";
 import { Header, Menu } from "semantic-ui-react";
-import Calender from "react-calendar";
 
 export default function EventFilter({ predicate, setPredicate, loading }) {
   return (

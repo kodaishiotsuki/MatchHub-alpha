@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Grid, Icon, Segment } from "semantic-ui-react";
 import { format } from "date-fns";
 import EventDetailedMap from "./EventDetailedMap";
-import { Link } from "react-router-dom";
 
 export default function EventDetailedInfo({ event }) {
   const [mapOpen, setMapOpen] = useState(false);
@@ -26,7 +25,7 @@ export default function EventDetailedInfo({ event }) {
           </Grid.Column>
           <Grid.Column width={11}>
             <span>
-              <a href={event.pitch}>{`${event.title}` + "の紹介"}</a>
+              <a href={event.pitch}>{`${event.title} + "の紹介"`}</a>
             </span>
           </Grid.Column>
         </Grid>

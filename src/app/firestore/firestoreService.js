@@ -1,4 +1,3 @@
-import cuid from "cuid";
 import firebase from "../config/firebase";
 
 const db = firebase.firestore();
@@ -200,5 +199,22 @@ export async function cancelUserAttendance(event) {
       });
   } catch (error) {
     throw error;
+  }
+}
+
+//おそらく使わない
+export function getUserEventsQuery(activeTab, userUid) {
+  let eventsRef = db.collection("events");
+  switch (activeTab) {
+    case 1: //past events
+      return eventsRef
+        .where("attendeeIds", "array-contains", userUid)
+        .orderBy("date", "desc");
+    case 2: //hosting
+      return eventsRef.where("hostUid", "==", userUid).orderBy("date");
+    default:
+      return eventsRef
+        .where("attendeeIds", "array-contains", userUid)
+        .orderBy("date");
   }
 }
