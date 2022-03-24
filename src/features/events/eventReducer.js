@@ -1,4 +1,5 @@
 import {
+  CLEAR_COMMENTS,
   CREATE_EVENT,
   DELETE_EVENT,
   FETCH_EVENTS,
@@ -8,7 +9,7 @@ import {
 
 const initialState = {
   events: [],
-  comments:[]
+  comments: [],
 };
 
 export default function eventReducer(state = initialState, { type, payload }) {
@@ -40,6 +41,11 @@ export default function eventReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         comments: payload,
+      };
+    case CLEAR_COMMENTS:
+      return {
+        ...state,
+        comments: [],
       };
     default:
       return state;

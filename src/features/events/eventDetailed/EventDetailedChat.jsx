@@ -1,26 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Comment, Header, Segment } from "semantic-ui-react";
 import { firebaseObjectToArray } from "../../../app/firestore/firebaseService";
-import { getEventChatRef } from "../../../app/firestore/firestoreService";
+import { getEventChatRef } from "../../../app/firestore/firebaseService";
 import { listenToEventChat } from "../eventActions";
 import EventDetailedChatForm from "./EventDetailedChatForm";
 import { formatDistance } from "date-fns";
+import { CLEAR_COMMENTS } from "../eventConstants";
 
 export default function EventDetailedChat({ eventId }) {
   const dispatch = useDispatch();
   const { comments } = useSelector((state) => state.event); //引数はrootReducerで確認
+  const [showReplyForm, setShowReplyForm] = useState(false);
 
   useEffect(() => {
     getEventChatRef(eventId).on("value", (snapshot) => {
-      if (!snapshot.exists) return;
+      if (!snapshot.exists()) return;
       dispatch(
         listenToEventChat(firebaseObjectToArray(snapshot.val()).reverse())
       );
+      return () => {
+        dispatch({ type: CLEAR_COMMENTS });
+        getEventChatRef().off();
+      };
     });
-  }, [dispatch, eventId]);
+  }, [eventId, dispatch]);
 
   return (
     <>
@@ -56,7 +62,9 @@ export default function EventDetailedChat({ eventId }) {
                   ))}
                 </Comment.Text>
                 <Comment.Actions>
-                  <Comment.Action>Reply</Comment.Action>
+                  <Comment.Action onClick={() => setShowReplyForm(true)}>
+                    Reply
+                  </Comment.Action>
                 </Comment.Actions>
               </Comment.Content>
             </Comment>
