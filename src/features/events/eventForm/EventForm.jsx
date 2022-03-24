@@ -43,7 +43,7 @@ export default function EventForm({ match, history }) {
     subTitle2: "",
     category: "",
     description: "",
-    pitch: "",
+    pitchId: "",
     city: {
       address: "",
       latLng: null,
@@ -121,7 +121,7 @@ export default function EventForm({ match, history }) {
             <MyTextInput name='title' placeholder='Company name' />
             <MyTextInput name='subTitle' placeholder='Sub title' />
             <MyTextInput name='subTitle2' placeholder='Sub title2' />
-            <MyTextInput name='pitch' placeholder="Push the pitch's URL" />
+            <MyTextInput name='pitchId' placeholder="Push the pitch's URL" />
             <MySelectInput
               name='category'
               placeholder='Category'

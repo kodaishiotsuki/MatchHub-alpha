@@ -14,7 +14,7 @@ export default function EventDetailedInfo({ event }) {
       mute: 1,
       playsinline: 1,
       loop: 1,
-      playlist: "FUvFqDXRXbw",
+      playlist: event.pitchId,
     },
   };
   return (
@@ -41,8 +41,6 @@ export default function EventDetailedInfo({ event }) {
         </Grid>
       </Segment>
 
-      
-
       <Segment attached>
         <Grid verticalAlign='middle'>
           <Grid.Column width={1}>
@@ -56,14 +54,14 @@ export default function EventDetailedInfo({ event }) {
               onClick={() => setVideoOpen(!videoOpen)}
               color='teal'
               size='tiny'
-              content={videoOpen ? "Hide video" : "Show video"}
+              content={videoOpen ? "Hide Video" : "Show Video"}
             />
           </Grid.Column>
         </Grid>
       </Segment>
       {videoOpen && (
         <YouTube
-          videoId='FUvFqDXRXbw'
+          videoId={event.pitchId}
           className={style.iframe}
           containerClassName={style.youtube}
           opts={opts}
