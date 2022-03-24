@@ -26,6 +26,7 @@ function render() {
     rootEl
   );
 }
+
 if (module.hot) {
   module.hot.accept("./app/layout/App", function () {
     setTimeout(render);
