@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Grid, Header, Image, Tab } from "semantic-ui-react";
+import { Button, Card, Grid, Header, Image, Tab } from "semantic-ui-react";
 // import { format } from "date-fns";
 import ProfileForm from "./ProfileForm";
 
@@ -7,7 +7,7 @@ export default function AboutTab({ profile, isCurrentUser }) {
   const [editMode, setEditMode] = useState(false);
   return (
     <Tab.Pane>
-      <Grid>
+      <Grid >
         <Grid.Column width={16}>
           <Header
             floated='left'
@@ -29,29 +29,46 @@ export default function AboutTab({ profile, isCurrentUser }) {
             <ProfileForm profile={profile} />
           ) : (
             <>
-              <div style={{ marginBottom: 10 }}>
+              <div >
                 {/* <strong>
                   Member since:{format(profile.createdAt, "yyyy/MM/dd")}
                 </strong> */}
                 <div>{profile.description || null}</div>
-                <div>
-                  <a href={profile.meetyURL}>
+
+                <Card centered style={{ width: "85%" }}>
+                  <Card.Content style={{ display: "flex" }}>
                     <Image
-                      centered
-                      src={"/assets/metty.png"}
-                      style={{
-                        width: "50%",
-                        maxHeight: "150px",
-                        marginTop: 15,
-                      }}
+                      src={profile.photoURL}
+                      circular
+                      style={{ width: 50 }}
                     />
-                  </a>
-                  <h3 style={{ textAlign: "center" }}>
-                    <i className='hand point up outline icon' />
-                    Go to the metty
-                    <i className='hand point up outline icon' />
-                  </h3>
-                </div>
+                    <Header
+                      content={profile.displayName}
+                      as='h3'
+                      style={{ marginLeft: 15 }}
+                    />
+                  </Card.Content>
+                  <Card.Content>
+                    <a href={profile.meetyURL}>
+                      <Image
+                        centered
+                        src={"/assets/metty.png"}
+                        style={{
+                          width: "100%",
+                          maxHeight: "170px",
+                          marginTop: 15,
+                        }}
+                      />
+                    </a>
+                  </Card.Content>
+                  <Card.Content>
+                    <h3 style={{ textAlign: "center" }}>
+                      <i className='hand point up outline icon' />
+                      Go to the metty
+                      <i className='hand point up outline icon' />
+                    </h3>
+                  </Card.Content>
+                </Card>
               </div>
             </>
           )}
