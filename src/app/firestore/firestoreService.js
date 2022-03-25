@@ -311,3 +311,12 @@ export async function unFollowUser(profile) {
     throw error;
   }
 }
+
+//フォロワーを獲得するアクション
+export function getFollowersCollection(profileId) {
+  return db.collection('following').doc(profileId).collection('userFollowers')
+}
+//フォローした人を獲得するアクション
+export function getFollowingCollection(profileId) {
+  return db.collection("following").doc(profileId).collection("userFollowing");
+}
