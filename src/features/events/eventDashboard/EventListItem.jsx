@@ -19,10 +19,21 @@ export default function EventListItem({ event }) {
       <Segment>
         <Item.Group>
           <Item>
-            <Image size='small' rounded src={event.hostPhotoURL} />
+            <Image
+              size='tiny'
+              rounded
+              src={event.hostPhotoURL}
+              style={{ maxHeight: 130, width: 300 }}
+            />
             <Item.Content>
               <Item.Header content={event.title} size='large' />
               <br />
+              <br />
+              <Item.Header
+                content='The people we seek RECRUIT'
+                style={{ fontSize: 15 }}
+              />
+              <br></br>
               <Item.Content className='ui teal tag label'>
                 {event.subTitle}
               </Item.Content>

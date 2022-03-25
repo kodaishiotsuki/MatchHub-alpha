@@ -33,18 +33,18 @@ export default function ProfileHeader({ profile, isCurrentUser }) {
             </Item>
           </Item.Group>
         </Grid.Column>
-        <Grid.Column width={5}>
+        <Grid.Column width={5} verticalAlign='middle'>
           <div>
-            <a href={`https://twitter.com/${profile.twitterId}`}>
+            <a href={profile.twitterURL}>
               <Icon size='huge' color='teal' name='twitter' />
             </a>
-            <a href={`https://www.facebook.com/${profile.facebookId}`}>
+            <a href={profile.facebookURL}>
               <Icon size='huge' color='teal' name='facebook square' />
             </a>
-            <a href={`https://github.com/${profile.gitHubId}`}>
+            <a href={profile.gitHubURL}>
               <Icon size='huge' color='teal' name='github' />
             </a>
-            <a href={`https://note.com/${profile.noteId}`}>
+            <a href={profile.noteURL}>
               <Icon size='huge' color='teal' name='sticky note outline' />
             </a>
           </div>

@@ -14,10 +14,10 @@ export default function ProfileForm({ profile }) {
         displayName: profile.displayName,
         description: profile.description || "",
         meetyURL: profile.meetyURL || "",
-        twitterId: "",
-        facebookId: "",
-        gitHubId: "",
-        noteId: "",
+        twitterURL: profile.twitterURL || "",
+        facebookURL: profile.facebookURL || "",
+        gitHubURL: profile.gitHubURL || "",
+        noteURL: profile.noteURL || "",
       }}
       validationSchema={Yup.object({
         displayName: Yup.string().required(),
@@ -38,10 +38,10 @@ export default function ProfileForm({ profile }) {
           <MyTextArea name='description' placeholder='Description' />
           <MyTextInput name='meetyURL' placeholder='MeetyURL' />
           <Header content='Input your SNS' />
-          <MyTextInput name='twitterId' placeholder='twitterId' />
-          <MyTextInput name='facebookId' placeholder='facebookId' />
-          <MyTextInput name='gitHubId' placeholder='gitHubId' />
-          <MyTextInput name='noteId' placeholder='noteId' />
+          <MyTextInput name='twitterURL' placeholder='twitterURL' />
+          <MyTextInput name='facebookURL' placeholder='facebookURL' />
+          <MyTextInput name='gitHubURL' placeholder='gitHubURL' />
+          <MyTextInput name='noteURL' placeholder='noteURL' />
           <Button
             loading={isSubmitting}
             disabled={isSubmitting || !isValid || !dirty}
