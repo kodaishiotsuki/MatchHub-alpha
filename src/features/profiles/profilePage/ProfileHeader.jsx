@@ -4,6 +4,7 @@ import {
   Divider,
   Grid,
   Header,
+  Icon,
   Item,
   Reveal,
   Segment,
@@ -14,7 +15,7 @@ export default function ProfileHeader({ profile, isCurrentUser }) {
   return (
     <Segment>
       <Grid>
-        <Grid.Column width={12}>
+        <Grid.Column width={7}>
           <Item.Group>
             <Item>
               <Item.Image
@@ -31,6 +32,22 @@ export default function ProfileHeader({ profile, isCurrentUser }) {
               </Item.Content>
             </Item>
           </Item.Group>
+        </Grid.Column>
+        <Grid.Column width={5}>
+          <div>
+            <a href={`https://twitter.com/${profile.twitterId}`}>
+              <Icon size='huge' color='teal' name='twitter' />
+            </a>
+            <a href={`https://www.facebook.com/${profile.facebookId}`}>
+              <Icon size='huge' color='teal' name='facebook square' />
+            </a>
+            <a href={`https://github.com/${profile.gitHubId}`}>
+              <Icon size='huge' color='teal' name='github' />
+            </a>
+            <a href={`https://note.com/${profile.noteId}`}>
+              <Icon size='huge' color='teal' name='sticky note outline' />
+            </a>
+          </div>
         </Grid.Column>
         <Grid.Column width={4}>
           <Statistic.Group>

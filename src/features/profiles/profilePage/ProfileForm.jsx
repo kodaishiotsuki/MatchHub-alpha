@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form } from "formik";
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MyTextArea from "../../../app/common/form/MyTextArea";
-import { Button } from "semantic-ui-react";
+import { Button, Header } from "semantic-ui-react";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { updateUserProfile } from "../../../app/firestore/firestoreService";
@@ -14,6 +14,10 @@ export default function ProfileForm({ profile }) {
         displayName: profile.displayName,
         description: profile.description || "",
         meetyURL: profile.meetyURL || "",
+        twitterId: "",
+        facebookId: "",
+        gitHubId: "",
+        noteId: "",
       }}
       validationSchema={Yup.object({
         displayName: Yup.string().required(),
@@ -33,6 +37,11 @@ export default function ProfileForm({ profile }) {
           <MyTextInput name='displayName' placeholder='Display Name' />
           <MyTextArea name='description' placeholder='Description' />
           <MyTextInput name='meetyURL' placeholder='MeetyURL' />
+          <Header content='Input your SNS' />
+          <MyTextInput name='twitterId' placeholder='twitterId' />
+          <MyTextInput name='facebookId' placeholder='facebookId' />
+          <MyTextInput name='gitHubId' placeholder='gitHubId' />
+          <MyTextInput name='noteId' placeholder='noteId' />
           <Button
             loading={isSubmitting}
             disabled={isSubmitting || !isValid || !dirty}
