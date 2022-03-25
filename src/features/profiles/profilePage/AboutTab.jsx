@@ -47,8 +47,9 @@ export default function AboutTab({ profile, isCurrentUser }) {
                     />
                   </a>
                   <h3 style={{ textAlign: "center" }}>
+                    <i className='hand point up outline icon' />
                     Go to the metty
-                    <i class='hand point up outline icon'></i>
+                    <i className='hand point up outline icon' />
                   </h3>
                 </div>
               </div>

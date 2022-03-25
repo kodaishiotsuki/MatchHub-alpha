@@ -11,15 +11,30 @@ import {
   Statistic,
 } from "semantic-ui-react";
 import { toast } from "react-toastify";
-import { followUser } from "../../../app/firestore/firestoreService";
+import {
+  followUser,
+  unFollowUser,
+} from "../../../app/firestore/firestoreService";
 
 export default function ProfileHeader({ profile, isCurrentUser }) {
   const [loading, setLoading] = useState(false);
 
+  //フォローボタン押した時のアクション
   async function handleFollowUser() {
     setLoading(true);
     try {
       await followUser(profile);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  //アンフォローボタン押した時のアクション
+  async function handleUnFollowUser() {
+    setLoading(true);
+    try {
+      await unFollowUser(profile);
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -87,6 +102,14 @@ export default function ProfileHeader({ profile, isCurrentUser }) {
                   />
                 </Reveal.Content>
               </Reveal>
+              <Button
+                basic
+                fluid
+                color='red'
+                content='UnFollow'
+                onClick={handleUnFollowUser}
+                loading={loading}
+              />
             </>
           )}
         </Grid.Column>
