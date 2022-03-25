@@ -1,6 +1,6 @@
 /* global google */
 import React, { useState } from "react";
-import { Button, Confirm, Header, Segment } from "semantic-ui-react";
+import { Button, Confirm, Header,  Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -53,6 +53,7 @@ export default function EventForm({ match, history }) {
       latLng: null,
     },
     date: "",
+    companyPhotoURL: "",
   };
 
   //入力画面バリデーション
@@ -128,6 +129,8 @@ export default function EventForm({ match, history }) {
               options={categoryData}
             />
             <MyTextArea name='description' placeholder='Description' rows={5} />
+            {/* <MyFileInput name='companyPhotoURL' />
+            <Image /> */}
             <Header sub color='teal' content='Company Location Details' />
             <MyPlaceInput name='city' placeholder='City' />
             <MyPlaceInput
