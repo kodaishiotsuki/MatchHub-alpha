@@ -13,6 +13,7 @@ export default function ProfileForm({ profile }) {
       initialValues={{
         displayName: profile.displayName,
         description: profile.description || "",
+        meetyURL: profile.meetyURL || "",
       }}
       validationSchema={Yup.object({
         displayName: Yup.string().required(),
@@ -31,6 +32,7 @@ export default function ProfileForm({ profile }) {
         <Form className='ui form'>
           <MyTextInput name='displayName' placeholder='Display Name' />
           <MyTextArea name='description' placeholder='Description' />
+          <MyTextInput name='meetyURL' placeholder='MeetyURL' />
           <Button
             loading={isSubmitting}
             disabled={isSubmitting || !isValid || !dirty}

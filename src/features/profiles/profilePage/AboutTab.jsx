@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Button, Grid, Header, Icon, Image, Tab } from "semantic-ui-react";
-import { format } from "date-fns";
+import { Button, Grid, Header, Image, Tab } from "semantic-ui-react";
+// import { format } from "date-fns";
 import ProfileForm from "./ProfileForm";
 
 export default function AboutTab({ profile, isCurrentUser }) {
@@ -30,25 +30,25 @@ export default function AboutTab({ profile, isCurrentUser }) {
           ) : (
             <>
               <div style={{ marginBottom: 10 }}>
-                <strong>
+                {/* <strong>
                   Member since:{format(profile.createdAt, "yyyy/MM/dd")}
-                </strong>
+                </strong> */}
                 <div>{profile.description || null}</div>
                 <div>
-                  <a href=''>
+                  <a href={profile.meetyURL}>
                     <Image
                       centered
-                      src='/assets/metty.png'
+                      src={"/assets/metty.png"}
                       style={{
                         width: "50%",
                         maxHeight: "150px",
                         marginTop: 15,
                       }}
                     />
-                    <img />
                   </a>
                   <h3 style={{ textAlign: "center" }}>
-                    Go to the metty<i class='hand point up outline icon'></i>
+                    Go to the metty
+                    <i class='hand point up outline icon'></i>
                   </h3>
                 </div>
               </div>
