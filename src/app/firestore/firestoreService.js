@@ -314,9 +314,21 @@ export async function unFollowUser(profile) {
 
 //フォロワーを獲得するアクション
 export function getFollowersCollection(profileId) {
-  return db.collection('following').doc(profileId).collection('userFollowers')
+  return db.collection("following").doc(profileId).collection("userFollowers");
 }
 //フォローした人を獲得するアクション
 export function getFollowingCollection(profileId) {
   return db.collection("following").doc(profileId).collection("userFollowing");
 }
+
+//フォローしているIDをゲット
+export function getFollowingDoc(profileId) {
+  const userUid = firebase.auth().currentUser.uid;
+  return db
+    .collection("following")
+    .doc(userUid)
+    .collection("userFollowing")
+    .doc(profileId)
+    .get();
+}
+
