@@ -1,4 +1,5 @@
 import {
+  CLEAR_FOLLOWINGS,
   LISTEN_TO_CURRENT_USER_PROFILE,
   LISTEN_TO_FOLLOWERS,
   LISTEN_TO_FOLLOWINGS,
@@ -63,6 +64,12 @@ export default function profileReducer(
       return {
         ...state,
         followingUser: false,
+      };
+    case CLEAR_FOLLOWINGS:
+      return {
+        ...state,
+        followers: [],
+        followings: [],
       };
     default:
       return state;

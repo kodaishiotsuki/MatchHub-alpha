@@ -19,6 +19,7 @@ import {
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setFollowUser, setUnFollowUser } from "../profileActions";
+import { CLEAR_FOLLOWINGS } from "../profileConstants";
 
 export default function ProfileHeader({ profile, isCurrentUser }) {
   const dispatch = useDispatch();
@@ -40,6 +41,9 @@ export default function ProfileHeader({ profile, isCurrentUser }) {
       }
     }
     fetchFollowingDoc().then(() => setLoading(false));
+    return () => {
+      dispatch({type:CLEAR_FOLLOWINGS}) //他のユーザーに遷移したときにclearする
+    }
   }, [dispatch, isCurrentUser, profile.id]);
 
   //フォローボタン押した時のアクション
