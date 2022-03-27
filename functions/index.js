@@ -65,11 +65,14 @@ exports.removeFollowing = functions.firestore
 
 
 //eventsコレクション（企業の概要が更新された時のアクション）使わない...
+//noteを入力したらフィードに追記されるように実装予定！
 exports.eventUpdated = functions.firestore
   .document("events/{eventId}")
   .onUpdate(async (snapshot, context) => {
     const before = snapshot.before.data();
     const after = snapshot.after.data();
+
+
     //ここで分岐
     if (before.attendees.length < after.attendees.length) {
       let attendeeJoined = after.attendees.filter(
@@ -87,7 +90,7 @@ exports.eventUpdated = functions.firestore
             .database()
             .ref(`/posts/${doc.id}`)
             .push(
-              newPost(attendeeJoined, "joined-event", context.params.eventId)
+              newPost(attendeeJoined, "joined-event", context.params.eventId,before)
             );
         });
       } catch (error) {
@@ -109,7 +112,7 @@ exports.eventUpdated = functions.firestore
           admin
             .database()
             .ref(`/posts/${doc.id}`)
-            .push(newPost(attendeeLeft, "letf-event", context.params.eventId));
+            .push(newPost(attendeeLeft, "letf-event", context.params.eventId,before));
         });
       } catch (error) {
         return console.log(error);
@@ -118,7 +121,7 @@ exports.eventUpdated = functions.firestore
     return console.log('finished')
   });
 
-function newPost(user, code, eventId) {
+function newPost(user, code, eventId,event) {
   return {
     photoURL: user.photoURL,
     date: admin.database.ServerValue.TIMESTAMP,
@@ -126,5 +129,6 @@ function newPost(user, code, eventId) {
     displayName: user.displayName,
     eventId,
     userUid: user.id,
+    title:event.title
   };
 }
