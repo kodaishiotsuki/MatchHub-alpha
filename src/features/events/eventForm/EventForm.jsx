@@ -54,6 +54,7 @@ export default function EventForm({ match, history }) {
     },
     date: "",
     companyPhotoURL: "",
+    
   };
 
   //入力画面バリデーション

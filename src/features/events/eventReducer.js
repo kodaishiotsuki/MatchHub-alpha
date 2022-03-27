@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   events: [],
-  comments: [],
+  comments:[]
 };
 
 export default function eventReducer(state = initialState, { type, payload }) {
@@ -45,8 +45,8 @@ export default function eventReducer(state = initialState, { type, payload }) {
     case CLEAR_COMMENTS:
       return {
         ...state,
-        comments: [],
-      };
+        comments:[]
+      }
     default:
       return state;
   }

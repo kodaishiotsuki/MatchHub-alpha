@@ -23,9 +23,9 @@ export function dataFromSnapshot(snapshot) {
 }
 
 //eventsコレクションへDB接続
-export function listenToEventsFromFirestore(predicate) {
+export function listenToEventsFromFirestore(predicate,limit) {
   const user = firebase.auth().currentUser;
-  let eventsRef = db.collection("events");
+  let eventsRef = db.collection("events").orderBy('createdAt','desc');
   switch (predicate.get("filter")) {
     case "engineer":
       return eventsRef.where("subTitle", "==", "エンジニア");
@@ -50,6 +50,7 @@ export function addEventToFirestore(event) {
   const user = firebase.auth().currentUser;
   return db.collection("events").add({
     ...event,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     hostUid: user.uid,
     hostedBy: user.displayName,
     hostPhotoURL: user.photoURL || null,
