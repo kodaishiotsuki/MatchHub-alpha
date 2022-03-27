@@ -1,0 +1,17 @@
+[debug] [2022-03-27T03:49:44.051Z] ----------------------------------------------------------------------
+[debug] [2022-03-27T03:49:44.052Z] Command:       /Users/kodaishiotsuki/.nodebrew/node/v16.14.0/bin/node /Users/kodaishiotsuki/.nodebrew/current/bin/firebase deploy --only functions
+[debug] [2022-03-27T03:49:44.053Z] CLI Version:   10.5.0
+[debug] [2022-03-27T03:49:44.053Z] Platform:      darwin
+[debug] [2022-03-27T03:49:44.053Z] Node Version:  v16.14.0
+[debug] [2022-03-27T03:49:44.062Z] Time:          Sun Mar 27 2022 12:49:44 GMT+0900 (日本標準時)
+[debug] [2022-03-27T03:49:44.063Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-03-27T03:49:44.116Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-03-27T03:49:44.116Z] > authorizing via signed-in user (0711dr5@gmail.com)
+[debug] [2022-03-27T03:49:44.116Z] [iam] checking project matchhub-af483 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2022-03-27T03:49:44.118Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/matchhub-af483:testIamPermissions [none]
+[debug] [2022-03-27T03:49:44.118Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/matchhub-af483:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2022-03-27T03:49:44.895Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/matchhub-af483:testIamPermissions 200
+[debug] [2022-03-27T03:49:44.895Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/matchhub-af483:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2022-03-27T03:49:44.896Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/matchhub-af483/serviceAccounts/matchhub-af483@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2022-03-27T03:49:44.896Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/matchhub-af483/serviceAccounts/matchhub-af483@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}

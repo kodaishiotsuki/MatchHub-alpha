@@ -104,3 +104,9 @@ export function addEventChatComment(eventId, values) {
 export function getEventChatRef(eventId) {
   return firebase.database().ref(`chat/${eventId}`).orderByKey();
 }
+
+//フィードを出力
+export function getUserFeedRef() {
+  const user = firebase.auth().currentUser;
+  return firebase().ref(`posts/${user.uid}`).orderByKey().limitToLast(5);
+}

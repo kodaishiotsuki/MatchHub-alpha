@@ -8,13 +8,14 @@ import { listenToEventsFromFirestore } from "../../../app/firestore/firestoreSer
 import { listenToEvents } from "../eventActions";
 import { useDispatch } from "react-redux";
 import useFirestoreCollection from "../../../app/hooks/useFirestoreCollection";
+import EventsFeed from "./EventsFeed";
 
 const EventDashboard = () => {
-  const { events } = useSelector((state) => state.event);
-  //ローディング
-  const { loading } = useSelector((state) => state.async);
   //dispatch(listenToEvents)
   const dispatch = useDispatch();
+  const { events } = useSelector((state) => state.event);
+  const { loading } = useSelector((state) => state.async);
+  const { authenticated } = useSelector((state) => state.auth);
 
   //フィルター機能
   const [predicate, setPredicate] = useState(
@@ -45,6 +46,7 @@ const EventDashboard = () => {
         <EventList events={events} />
       </Grid.Column>
       <Grid.Column width={6}>
+        {authenticated && <EventsFeed />}
         <EventFilter
           predicate={predicate}
           setPredicate={handleSetPredicate}

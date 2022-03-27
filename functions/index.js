@@ -4,6 +4,8 @@ admin.initializeApp(functions.config().firebase);
 
 const db = admin.firestore();
 
+//----- ここに関数記述すると、イベント発生 -----//
+
 //フォロー増やす
 exports.addFollowing = functions.firestore
   .document("following/{userUid}/userFollowing/{profileId}")
@@ -58,3 +60,71 @@ exports.removeFollowing = functions.firestore
       return console.log(error);
     }
   });
+
+
+
+
+//eventsコレクション（企業の概要が更新された時のアクション）使わない...
+exports.eventUpdated = functions.firestore
+  .document("events/{eventId}")
+  .onUpdate(async (snapshot, context) => {
+    const before = snapshot.before.data();
+    const after = snapshot.after.data();
+    //ここで分岐
+    if (before.attendees.length < after.attendees.length) {
+      let attendeeJoined = after.attendees.filter(
+        (item1) => !before.attendees.some((item2) => item2.id === item1.id)
+      )[0];
+      console.log({ attendeeJoined });
+      try {
+        const followerDocs = await db
+          .collection("following")
+          .doc(attendeeJoined.id)
+          .collection("userFollowers")
+          .get();
+        followerDocs.forEach((doc) => {
+          admin
+            .database()
+            .ref(`/posts/${doc.id}`)
+            .push(
+              newPost(attendeeJoined, "joined-event", context.params.eventId)
+            );
+        });
+      } catch (error) {
+        return console.log(error);
+      }
+    }
+    if (before.attendees.length < after.attendees.length) {
+      let attendeeLeft = after.attendees.filter(
+        (item1) => !before.attendees.some((item2) => item2.id === item1.id)
+      )[0];
+      console.log({ attendeeLeft });
+      try {
+        const followerDocs = await db
+          .collection("following")
+          .doc(attendeeLeft.id)
+          .collection("userFollowers")
+          .get();
+        followerDocs.forEach((doc) => {
+          admin
+            .database()
+            .ref(`/posts/${doc.id}`)
+            .push(newPost(attendeeLeft, "letf-event", context.params.eventId));
+        });
+      } catch (error) {
+        return console.log(error);
+      }
+    }
+    return console.log('finished')
+  });
+
+function newPost(user, code, eventId) {
+  return {
+    photoURL: user.photoURL,
+    date: admin.database.ServerValue.TIMESTAMP,
+    code,
+    displayName: user.displayName,
+    eventId,
+    userUid: user.id,
+  };
+}

@@ -1,0 +1,13 @@
+[debug] [2022-03-27T03:58:48.338Z] ----------------------------------------------------------------------
+[debug] [2022-03-27T03:58:48.340Z] Command:       /Users/kodaishiotsuki/.nodebrew/node/v16.14.0/bin/node /Users/kodaishiotsuki/.nodebrew/current/bin/firebase deploy --only functions
+[debug] [2022-03-27T03:58:48.340Z] CLI Version:   10.5.0
+[debug] [2022-03-27T03:58:48.340Z] Platform:      darwin
+[debug] [2022-03-27T03:58:48.340Z] Node Version:  v16.14.0
+[debug] [2022-03-27T03:58:48.352Z] Time:          Sun Mar 27 2022 12:58:48 GMT+0900 (日本標準時)
+[debug] [2022-03-27T03:58:48.353Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-03-27T03:58:48.421Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-03-27T03:58:48.422Z] > authorizing via signed-in user (0711dr5@gmail.com)
+[debug] [2022-03-27T03:58:48.422Z] [iam] checking project matchhub-af483 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2022-03-27T03:58:48.424Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/matchhub-af483:testIamPermissions [none]
+[debug] [2022-03-27T03:58:48.425Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/matchhub-af483:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
