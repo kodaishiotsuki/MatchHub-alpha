@@ -1,15 +1,20 @@
 import React from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Modal } from "semantic-ui-react";
 import { openModal } from "../../app/common/modals/modalReducer";
 
-export default function UnauthModal({history}) {
+export default function UnauthModal({ history }) {
   const [open, setOpen] = useState(true);
+  const { prevLocation } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   function handleClose() {
-    history.goBack(); //通常画面へ遷移（空白にならない）
+    if (history && prevLocation) {
+      history.push(prevLocation.pathname); //今の画面へ遷移（空白にならない）
+    } else {
+      history.push("/events");
+    }
     setOpen(false);
   }
 
