@@ -4,12 +4,12 @@ import EventList from "./EventList";
 import { useSelector } from "react-redux";
 import EventListItemPlaceholder from "./EventListItemPlaceholder";
 import EventFilter from "./EventFilter";
-import { fetchEvents } from "../eventActions";
+import { clearEvents, fetchEvents } from "../eventActions";
 import { useDispatch } from "react-redux";
 import EventsFeed from "./EventsFeed";
 
 const EventDashboard = () => {
-  const limit = 1;
+  const limit = 3;
   const dispatch = useDispatch();
   const { events, moreEvents } = useSelector((state) => state.event);
   const { loading } = useSelector((state) => state.async);
@@ -26,6 +26,8 @@ const EventDashboard = () => {
 
   //フィルター機能イベント
   function handleSetPredicate(key, value) {
+    dispatch(clearEvents()); //クリーンアップ
+    setLastDocSnapShot(null); //フィルターをリセット
     setPredicate(new Map(predicate.set(key, value)));
   }
 
@@ -43,7 +45,12 @@ const EventDashboard = () => {
       setLastDocSnapShot(lastVisible);
       setLoadingInitial(false);
     });
+    //アンマウント
+    return () => {
+      dispatch(clearEvents());
+    };
   }, [dispatch, predicate]);
+
   //ボタンクリック（ページング）
   function handleFetchNextEvents() {
     dispatch(fetchEvents(predicate, limit, lastDocSnapshot)).then(
