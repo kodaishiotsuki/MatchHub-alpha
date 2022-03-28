@@ -9,7 +9,8 @@ import {
 
 const initialState = {
   events: [],
-  comments:[]
+  comments: [],
+  moreEvents: false,
 };
 
 export default function eventReducer(state = initialState, { type, payload }) {
@@ -35,7 +36,8 @@ export default function eventReducer(state = initialState, { type, payload }) {
     case FETCH_EVENTS:
       return {
         ...state,
-        events: payload,
+        events: [...state.events, ...payload.events], //会社の情報を蓄積するため
+        moreEvents: payload.moreEvents,
       };
     case LISTEN_TO_EVENT_CHAT:
       return {
@@ -45,8 +47,8 @@ export default function eventReducer(state = initialState, { type, payload }) {
     case CLEAR_COMMENTS:
       return {
         ...state,
-        comments:[]
-      }
+        comments: [],
+      };
     default:
       return state;
   }

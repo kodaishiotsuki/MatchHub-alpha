@@ -23,23 +23,39 @@ export function dataFromSnapshot(snapshot) {
 }
 
 //eventsコレクションへDB接続
-export function listenToEventsFromFirestore(predicate) {
+export function fetchEventsFromFirestore(
+  predicate,
+  limit,
+  lastDocSnapshot = null
+) {
   const user = firebase.auth().currentUser;
-  let eventsRef = db.collection("events").orderBy('createdAt','desc');
+  let eventsRef = db
+    .collection("events")
+    .orderBy("date")
+    .orderBy("createdAt", "desc")
+    .startAfter(lastDocSnapshot)
+    .limit(limit);
   switch (predicate.get("filter")) {
     case "engineer":
-      return eventsRef.where("subTitle" || "subTitle2", "==", "エンジニア");
+      return eventsRef
+        .where("subTitle" || "subTitle2", "==", "エンジニア")
+        // .where("createdAt", "<=", predicate.get("startDate"));
     case "designer":
-      return (
-        eventsRef.where("subTitle", "==", "デザイナー") ||
-        eventsRef.where("subTitle2", "==", "デザイナー")
-      );
+      return eventsRef
+        .where("subTitle" || "subTitle2", "==", "デザイナー")
+        // .where("createdAt", "<=", predicate.get("startDate"));
     case "isHosting":
-      return eventsRef.where("hostUid", "==", user.uid);
+      return eventsRef
+        .where("hostUid", "==", user.uid)
+        // .where("createdAt", "<=", predicate.get("startDate"));
     // .where("date", ">=", predicate.get("startDate"));
+
+    // case "isGoing":
+    //   return eventsRef
+    //   .where('attendeeIds','array-contains',user.uid)
     default:
       // return eventsRef;
-    return eventsRef.where("createdAt", "<=", predicate.get("startDate"));
+      return eventsRef.where("date", "<=", predicate.get("startDate"));
   }
 }
 
