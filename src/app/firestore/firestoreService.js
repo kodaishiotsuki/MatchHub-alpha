@@ -37,17 +37,14 @@ export function fetchEventsFromFirestore(
     .limit(limit);
   switch (predicate.get("filter")) {
     case "engineer":
-      return eventsRef
-        .where("subTitle" || "subTitle2", "==", "エンジニア")
-        // .where("createdAt", "<=", predicate.get("startDate"));
+      return eventsRef.where("subTitle", "==", "エンジニア");
+    // .where("createdAt", "<=", predicate.get("startDate"));
     case "designer":
-      return eventsRef
-        .where("subTitle" || "subTitle2", "==", "デザイナー")
-        // .where("createdAt", "<=", predicate.get("startDate"));
+      return eventsRef.where("subTitle", "==", "デザイナー");
+    // .where("createdAt", "<=", predicate.get("startDate"));
     case "isHosting":
-      return eventsRef
-        .where("hostUid", "==", user.uid)
-        // .where("createdAt", "<=", predicate.get("startDate"));
+      return eventsRef.where("hostUid", "==", user.uid);
+    // .where("createdAt", "<=", predicate.get("startDate"));
     // .where("date", ">=", predicate.get("startDate"));
 
     // case "isGoing":
@@ -60,7 +57,7 @@ export function fetchEventsFromFirestore(
       //   "=>",
       //   predicate.get("startDate")
       // );
-         return eventsRef.where("date", "<=", predicate.get("startDate"));
+      return eventsRef.where("date", "<=", predicate.get("startDate"));
   }
 }
 

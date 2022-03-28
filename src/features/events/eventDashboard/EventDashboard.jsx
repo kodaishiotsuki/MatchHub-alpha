@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Loader } from "semantic-ui-react";
+import { Grid, Loader } from "semantic-ui-react";
 import EventList from "./EventList";
 import { useSelector } from "react-redux";
 import EventListItemPlaceholder from "./EventListItemPlaceholder";
 import EventFilter from "./EventFilter";
-import {
-  fetchEventsFromFirestore,
-  listenToEventsFromFirestore,
-} from "../../../app/firestore/firestoreService";
-import { fetchEvents, listenToEvents } from "../eventActions";
+import { fetchEvents } from "../eventActions";
 import { useDispatch } from "react-redux";
-import useFirestoreCollection from "../../../app/hooks/useFirestoreCollection";
 import EventsFeed from "./EventsFeed";
 
 const EventDashboard = () => {

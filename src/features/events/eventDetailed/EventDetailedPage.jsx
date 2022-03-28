@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { listenToEventFromFirestore } from "../../../app/firestore/firestoreService";
 import useFirestoreDoc from "../../../app/hooks/useFirestoreDoc";
-import { listenToEvents } from "../eventActions";
 import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedInfo from "./EventDetailedInfo";
@@ -11,14 +10,13 @@ import EventDetailedSidebar from "./EventDetailedSidebar";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { listenToSelectedEvents } from "../eventActions";
 
 export default function EventDetailedPage({ match }) {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
   //useSelectorでstoreから呼び出し
-  const event = useSelector((state) =>
-    state.event.events.find((e) => e.id === match.params.id)
-  );
+  const event = useSelector((state) => state.event.selectedEvent);
   //loading redux
   const { loading, error } = useSelector((state) => state.async);
 
@@ -30,7 +28,7 @@ export default function EventDetailedPage({ match }) {
   //eventsコレクションのidに紐付ける(データの受け取り)
   useFirestoreDoc({
     query: () => listenToEventFromFirestore(match.params.id),
-    data: (event) => dispatch(listenToEvents([event])),
+    data: (event) => dispatch(listenToSelectedEvents(event)),
     deps: [match.params.id, dispatch],
   });
 
@@ -46,7 +44,7 @@ export default function EventDetailedPage({ match }) {
       <Grid.Column width={10}>
         <EventDetailedHeader event={event} isGoing={isGoing} isHost={isHost} />
         <EventDetailedInfo event={event} />
-        <EventDetailedChat eventId={event.id}/>
+        <EventDetailedChat eventId={event.id} />
       </Grid.Column>
       <Grid.Column width={6}>
         <EventDetailedSidebar

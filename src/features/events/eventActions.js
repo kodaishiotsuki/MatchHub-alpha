@@ -9,6 +9,7 @@ import {
   DELETE_EVENT,
   FETCH_EVENTS,
   LISTEN_TO_EVENT_CHAT,
+  LISTEN_TO_SELECTED_EVENT,
   UPDATE_EVENT,
 } from "./eventConstants";
 import { dataFromSnapshot, fetchEventsFromFirestore } from "../../app/firestore/firestoreService";
@@ -37,10 +38,10 @@ export function fetchEvents(predicate, limit, lastDocSnapshot) {
 }
 
 //イベントを表示
-export function listenToEvents(events) {
+export function listenToSelectedEvents(event) {
   return {
-    type: FETCH_EVENTS,
-    payload: events,
+    type: LISTEN_TO_SELECTED_EVENT,
+    payload: event,
   };
 }
 
@@ -70,3 +71,4 @@ export function listenToEventChat(comments) {
     payload: comments,
   };
 }
+
