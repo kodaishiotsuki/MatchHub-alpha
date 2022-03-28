@@ -4,12 +4,12 @@ import { useDispatch } from "react-redux";
 import { Button, Divider, Modal } from "semantic-ui-react";
 import { openModal } from "../../app/common/modals/modalReducer";
 
-export default function UnauthModal() {
+export default function UnauthModal({history}) {
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
 
   function handleClose() {
-    
+    history.goBack(); //通常画面へ遷移（空白にならない）
     setOpen(false);
   }
 
