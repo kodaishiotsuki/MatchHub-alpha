@@ -9,6 +9,7 @@ export default function UnauthModal() {
   const dispatch = useDispatch();
 
   function handleClose() {
+    
     setOpen(false);
   }
 
