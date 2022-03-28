@@ -1,5 +1,6 @@
 import React from "react";
-import { Header, Menu } from "semantic-ui-react";
+import { Header, Menu } from "semantic-ui-react"
+// import Calender from "react-calendar"
 
 export default function EventFilter({ predicate, setPredicate, loading }) {
   return (
@@ -38,7 +39,7 @@ export default function EventFilter({ predicate, setPredicate, loading }) {
       {/* <Button content='エンジニア' /> */}
       {/* <Header icon='calendar' attached color='teal' content='Select date' />
       <Calender
-        onChange={(date) => setPredicate("startDate", date)}
+        onChange={(createdAt) => setPredicate("startDate", createdAt)}
         value={predicate.get("startDate") || new Date()}
         tileDisabled={() => loading}
       /> */}

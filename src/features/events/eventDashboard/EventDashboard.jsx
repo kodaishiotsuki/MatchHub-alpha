@@ -20,7 +20,7 @@ const EventDashboard = () => {
   //フィルター機能
   const [predicate, setPredicate] = useState(
     new Map([
-      // ["startDate", new Date()],
+      ["startDate", new Date()],
       ["filter", "all"],
     ])
   );

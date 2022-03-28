@@ -23,20 +23,23 @@ export function dataFromSnapshot(snapshot) {
 }
 
 //eventsコレクションへDB接続
-export function listenToEventsFromFirestore(predicate,limit) {
+export function listenToEventsFromFirestore(predicate) {
   const user = firebase.auth().currentUser;
   let eventsRef = db.collection("events").orderBy('createdAt','desc');
   switch (predicate.get("filter")) {
     case "engineer":
-      return eventsRef.where("subTitle", "==", "エンジニア");
+      return eventsRef.where("subTitle" || "subTitle2", "==", "エンジニア");
     case "designer":
-      return eventsRef.where("subTitle", "==", "デザイナー");
+      return (
+        eventsRef.where("subTitle", "==", "デザイナー") ||
+        eventsRef.where("subTitle2", "==", "デザイナー")
+      );
     case "isHosting":
       return eventsRef.where("hostUid", "==", user.uid);
     // .where("date", ">=", predicate.get("startDate"));
     default:
-      return eventsRef;
-    // return eventsRef.where("date", ">=", predicate.get("startDate"));
+      // return eventsRef;
+    return eventsRef.where("createdAt", "<=", predicate.get("startDate"));
   }
 }
 
@@ -50,7 +53,6 @@ export function addEventToFirestore(event) {
   const user = firebase.auth().currentUser;
   return db.collection("events").add({
     ...event,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     hostUid: user.uid,
     hostedBy: user.displayName,
     hostPhotoURL: user.photoURL || null,
@@ -277,11 +279,11 @@ export async function unFollowUser(profile) {
         .collection("userFollowing")
         .doc(profile.id)
     );
-    
+
     batch.update(db.collection("users").doc(user.uid), {
       followingCount: firebase.firestore.FieldValue.increment(-1),
     });
-    
+
     return await batch.commit();
   } catch (error) {
     throw error;
