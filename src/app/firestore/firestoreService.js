@@ -79,7 +79,7 @@ export function addEventToFirestore(event) {
       displayName: user.displayName,
       photoURL: user.photoURL || null,
     }),
-    attendeesIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
+    attendeeIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
 }
@@ -158,23 +158,23 @@ export async function updateUserProfilePhoto(downloadURL, filename) {
 }
 
 //firestore eventsコレクションに画像を保存
-export async function updateEventProfilePhoto(downloadURL) {
-  const user = firebase.auth().currentUser;
-  const eventDocRef = db.collection("events").doc(user.uid);
-  try {
-    const eventDoc = await eventDocRef.get();
-    if (!eventDoc.data().companyPhotoURL) {
-      await db.collection("events").doc(user.uid).update({
-        companyPhotoURL: downloadURL,
-      });
-    }
-    return await db.collection("events").doc(user.uid).add({
-      companyPhotoURL: downloadURL,
-    });
-  } catch (error) {
-    throw error;
-  }
-}
+// export async function updateEventProfilePhoto(downloadURL) {
+//   const user = firebase.auth().currentUser;
+//   const eventDocRef = db.collection("events").doc(user.uid);
+//   try {
+//     const eventDoc = await eventDocRef.get();
+//     if (!eventDoc.data().companyPhotoURL) {
+//       await db.collection("events").doc(user.uid).update({
+//         companyPhotoURL: downloadURL,
+//       });
+//     }
+//     return await db.collection("events").doc(user.uid).add({
+//       companyPhotoURL: downloadURL,
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 //ユーザーの写真を取得
 export function getUserPhotos(userUid) {
@@ -184,10 +184,56 @@ export function getUserPhotos(userUid) {
 //メイン写真の設定
 export async function setMainPhoto(photo) {
   const user = firebase.auth().currentUser;
+  const today = new Date();
+  const eventDocQuery = db
+    .collection("events")
+    .where("attendeeIds", "array-contains", user.uid)
+    .where("date", "<=", today);
+  const userFollowingRef = db
+    .collection("following")
+    .doc(user.uid)
+    .collection("userFollowing");
+
+  const batch = db.batch();
+
+  //写真の更新
+  batch.update(db.collection("users").doc(user.uid), {
+    photoURL: photo.url,
+  });
   try {
-    await db.collection("users").doc(user.uid).update({
-      photoURL: photo.url,
+    const eventsQuerySnap = await eventDocQuery.get();
+    for (let i = 0; i < eventsQuerySnap.docs.length; i++) {
+      let eventDoc = eventsQuerySnap.docs[i];
+      //ホストユーザーの写真更新
+      if (eventDoc.data().hostUid === user.uid) {
+        batch.update(eventsQuerySnap.docs[i].ref, {
+          hostPhotoURL: photo.url,
+        });
+      }
+      //attendees(メンバー)の写真更新
+      batch.update(eventsQuerySnap.docs[i].ref, {
+        attendees: eventDoc.data().attendees.filter((attendee) => {
+          if (attendee.id === user.uid) {
+            attendee.photoURL = photo.url;
+          }
+          return attendee;
+        }),
+      });
+    }
+    //フォローユーザーの写真更新
+    const userFollowingSnap = await userFollowingRef.get();
+    userFollowingSnap.docs.forEach((docRef) => {
+      let followingDocRef = db
+        .collection("following")
+        .doc(docRef.id)
+        .collection("userFollowers")
+        .doc(user.uid);
+      batch.update(followingDocRef, {
+        photoURL: photo.url,
+      });
     });
+    await batch.commit(); //バッチ処理
+
     return await user.updateProfile({
       photoURL: photo.url,
     });
@@ -219,7 +265,7 @@ export function addUserAttendance(event) {
         displayName: user.displayName,
         photoURL: user.photoURL || null,
       }),
-      attendeesIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
+      attendeeIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
     });
 }
 
@@ -233,7 +279,7 @@ export async function cancelUserAttendance(event) {
       .collection("events")
       .doc(event.id)
       .update({
-        attendeesIds: firebase.firestore.FieldValue.arrayRemove(user.uid),
+        attendeeIds: firebase.firestore.FieldValue.arrayRemove(user.uid),
         attendees: eventDoc
           .data()
           .attendees.filter((attendee) => attendee.id !== user.uid),
