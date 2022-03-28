@@ -55,7 +55,12 @@ export function fetchEventsFromFirestore(
     //   .where('attendeeIds','array-contains',user.uid)
     default:
       // return eventsRef;
-      return eventsRef.where("date", "<=", predicate.get("startDate"));
+      // return eventsRef.where(
+      //   ("createdAt", "desc"),
+      //   "=>",
+      //   predicate.get("startDate")
+      // );
+         return eventsRef.where("date", "<=", predicate.get("startDate"));
   }
 }
 
@@ -78,6 +83,7 @@ export function addEventToFirestore(event) {
       photoURL: user.photoURL || null,
     }),
     attendeesIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
 }
 
