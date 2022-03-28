@@ -21,9 +21,9 @@ export default function EventDetailedPage({ match }) {
   const { loading, error } = useSelector((state) => state.async);
 
   //eventのホスト
-  const isHost = event?.hostUid === currentUser.uid;
+  const isHost = event?.hostUid === currentUser?.uid;
   //eventの参加者（メンバー）
-  const isGoing = event?.attendees?.some((a) => a.id === currentUser.uid);
+  const isGoing = event?.attendees?.some((a) => a.id === currentUser?.uid);
 
   //eventsコレクションのidに紐付ける(データの受け取り)
   useFirestoreDoc({
