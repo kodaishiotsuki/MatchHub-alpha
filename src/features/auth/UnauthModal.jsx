@@ -17,7 +17,7 @@ export default function UnauthModal() {
       <Modal.Header content='You need to be signed in to do that' />
       <Modal.Content>
         <p>Please either login or register to see this content</p>
-        <Button.Group>
+        <Button.Group widths={4}>
           <Button
             fluid
             color='teal'
