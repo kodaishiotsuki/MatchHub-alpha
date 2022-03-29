@@ -39,12 +39,12 @@ export function fetchEventsFromFirestore(
   switch (filter) {
     case "engineer":
       return eventsRef
-        .where("subTitle", "==", "エンジニア")
+        .where("career", "array-contains", "エンジニア")
         .where("date", "<=", startDate);
     // .where("createdAt", "<=", predicate.get("startDate"));
     case "designer":
       return eventsRef
-        .where("subTitle", "==", "デザイナー")
+        .where("career", "array-contains", "デザイナー")
         .where("date", "<=", startDate);
     // .where("createdAt", "<=", predicate.get("startDate"));
     case "isHosting":
@@ -87,6 +87,7 @@ export function addEventToFirestore(event) {
       photoURL: user.photoURL || null,
     }),
     attendeeIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
+    // career: firebase.firestore.FieldValue.arrayUnion(),
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
 }

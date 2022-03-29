@@ -34,12 +34,14 @@ export default function EventListItem({ event }) {
                 style={{ fontSize: 15 }}
               />
               <br></br>
-              <Item.Content className='ui teal tag label'>
-                {event.subTitle}
-              </Item.Content>
-              <Item.Content className='ui teal tag label'>
-                {event.subTitle2}
-              </Item.Content>
+              <Item.Content
+                className='ui teal tag label'
+                content={event.career[0]}
+              ></Item.Content>
+              <Item.Content
+                className='ui teal tag label'
+                content={event.career[1]}
+              ></Item.Content>
               <Item.Description>
                 Foundered by
                 <Link to={`/profile/${event.hostUid}`}> {event.hostedBy}</Link>
