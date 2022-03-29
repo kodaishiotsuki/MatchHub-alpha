@@ -4,8 +4,10 @@ import { format } from "date-fns";
 import EventDetailedMap from "./EventDetailedMap";
 import YouTube from "react-youtube";
 import style from "./Youtube.module.css";
+import { useSelector } from "react-redux";
 
 export default function EventDetailedInfo({ event }) {
+  const { authenticated } = useSelector((state) => state.auth);
   const [mapOpen, setMapOpen] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
   const opts = {
@@ -55,6 +57,7 @@ export default function EventDetailedInfo({ event }) {
               color='teal'
               size='tiny'
               content={videoOpen ? "Hide Video" : "Show Video"}
+              disabled={!authenticated}
             />
           </Grid.Column>
         </Grid>

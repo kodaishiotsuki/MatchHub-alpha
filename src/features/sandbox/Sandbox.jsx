@@ -29,6 +29,11 @@ export default function Sandbox() {
   return (
     <>
       <h1>test 123</h1>
+      <br />
+      <li>会社画像アップロード</li>
+      <li>検索機能修正（業種を配列で格納）</li>
+      <li></li>
+
       <h3>the data is:{data}</h3>
       <Button
         name='increment'
