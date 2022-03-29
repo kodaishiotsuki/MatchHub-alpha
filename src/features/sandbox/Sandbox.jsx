@@ -32,7 +32,7 @@ export default function Sandbox() {
       <br />
       <li>会社画像アップロード</li>
       <li>検索機能修正（業種を配列で格納）</li>
-      <li></li>
+      <li>API制限（udemy:213）</li>
 
       <h3>the data is:{data}</h3>
       <Button

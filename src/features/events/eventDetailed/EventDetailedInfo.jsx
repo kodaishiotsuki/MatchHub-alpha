@@ -86,6 +86,7 @@ export default function EventDetailedInfo({ event }) {
               color='teal'
               size='tiny'
               content={mapOpen ? "Hide map" : "Show Map"}
+              disabled={!authenticated}
             />
           </Grid.Column>
         </Grid>
