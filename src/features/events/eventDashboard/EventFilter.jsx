@@ -1,9 +1,12 @@
 import React from "react";
 import { Header, Menu } from "semantic-ui-react";
 // import Calender from "react-calendar"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter } from "../eventActions";
 
-export default function EventFilter({ predicate, setPredicate, loading }) {
+export default function EventFilter({ loading }) {
+  const dispatch = useDispatch();
+  const {filter} = useSelector(state=>state.event)
   const { authenticated } = useSelector((state) => state.auth);
   return (
     <>
@@ -12,14 +15,14 @@ export default function EventFilter({ predicate, setPredicate, loading }) {
           <Header icon='filter' attached color='teal' content='Filters' />
           <Menu.Item
             content='All Companies'
-            active={predicate.get("filter") === "all"}
-            onClick={() => setPredicate("filter", "all")}
+            active={filter === "all"}
+            onClick={() => dispatch(setFilter("all"))}
             disabled={loading}
           />
           <Menu.Item
             content='My company'
-            active={predicate.get("filter") === "isHosting"}
-            onClick={() => setPredicate("filter", "isHosting")}
+            active={filter === "isHosting"}
+            onClick={() => dispatch(setFilter("isHosting"))}
             disabled={loading}
           />
         </Menu>
@@ -29,14 +32,14 @@ export default function EventFilter({ predicate, setPredicate, loading }) {
           <Header icon='search' attached color='teal' content='Select career' />
           <Menu.Item
             content='エンジニア'
-            active={predicate.get("filter") === "engineer"}
-            onClick={() => setPredicate("filter", "engineer")}
+            active={filter === "engineer"}
+            onClick={() => dispatch(setFilter("engineer"))}
             disabled={loading}
           />
           <Menu.Item
             content='デザイナー'
-            active={predicate.get("filter") === "designer"}
-            onClick={() => setPredicate("filter", "designer")}
+            active={filter === "designer"}
+            onClick={() => dispatch(setFilter("designer"))}
             disabled={loading}
           />
         </Menu>

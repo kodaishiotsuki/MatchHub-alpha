@@ -24,7 +24,8 @@ export function dataFromSnapshot(snapshot) {
 
 //eventsコレクションへDB接続
 export function fetchEventsFromFirestore(
-  predicate,
+  filter,
+  startDate,
   limit,
   lastDocSnapshot = null
 ) {
@@ -35,15 +36,21 @@ export function fetchEventsFromFirestore(
     .orderBy("createdAt", "desc")
     .startAfter(lastDocSnapshot)
     .limit(limit);
-  switch (predicate.get("filter")) {
+  switch (filter) {
     case "engineer":
-      return eventsRef.where("subTitle", "==", "エンジニア");
+      return eventsRef
+        .where("subTitle", "==", "エンジニア")
+        .where("date", "<=", startDate);
     // .where("createdAt", "<=", predicate.get("startDate"));
     case "designer":
-      return eventsRef.where("subTitle", "==", "デザイナー");
+      return eventsRef
+        .where("subTitle", "==", "デザイナー")
+        .where("date", "<=", startDate);
     // .where("createdAt", "<=", predicate.get("startDate"));
     case "isHosting":
-      return eventsRef.where("hostUid", "==", user.uid);
+      return eventsRef
+        .where("hostUid", "==", user.uid)
+        .where("date", "<=", startDate);
     // .where("createdAt", "<=", predicate.get("startDate"));
     // .where("date", ">=", predicate.get("startDate"));
 
@@ -57,7 +64,7 @@ export function fetchEventsFromFirestore(
       //   "=>",
       //   predicate.get("startDate")
       // );
-      return eventsRef.where("date", "<=", predicate.get("startDate"));
+      return eventsRef.where("date", "<=", startDate);
   }
 }
 
