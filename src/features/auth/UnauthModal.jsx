@@ -25,7 +25,7 @@ export default function UnauthModal({ history, setModalOpen }) {
     setOpen(false);
   }
 
-  //
+  //ログイン、新規登録入力後にモーダル非表示
   function handleOpenLoginModal(modalType) {
     dispatch(openModal({ modalType }));
     setOpen(false);
@@ -43,6 +43,7 @@ export default function UnauthModal({ history, setModalOpen }) {
             color='teal'
             content='Login'
             onClick={() => dispatch(openModal({ modalType: "LoginForm" }))}
+            onClose={handleOpenLoginModal}
           />
           <Button.Or />
           <Button
@@ -50,6 +51,7 @@ export default function UnauthModal({ history, setModalOpen }) {
             color='green'
             content='Register'
             onClick={() => dispatch(openModal({ modalType: "RegisterForm" }))}
+            onClose={handleOpenLoginModal}
           />
         </Button.Group>
         <Divider />

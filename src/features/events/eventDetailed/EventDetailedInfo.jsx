@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Grid, Icon, Segment } from "semantic-ui-react";
+import { Button, Grid, Icon, Label, Segment } from "semantic-ui-react";
 import { format } from "date-fns";
 import EventDetailedMap from "./EventDetailedMap";
 import YouTube from "react-youtube";
@@ -39,6 +39,26 @@ export default function EventDetailedInfo({ event }) {
           </Grid.Column>
           <Grid.Column width={15}>
             <span>{format(event.date, "yyyy/MM/dd ")}</span>
+          </Grid.Column>
+        </Grid>
+      </Segment>
+
+      <Segment attached>
+        <Grid verticalAlign='middle'>
+          <Grid.Column width={1}>
+            <Icon name='users' size='large' color='teal' />
+          </Grid.Column>
+          <Grid.Column width={15}>
+            <Label
+              className='ui teal tag label'
+              content={event.career[0]}
+              style={{ marginRight: 25 }}
+            />
+            <Label
+              className='ui teal tag label'
+              content={event.career[1]}
+              style={{ marginRight: 25 }}
+            />
           </Grid.Column>
         </Grid>
       </Segment>

@@ -70,6 +70,7 @@ export function uploadToFirebaseStorage(file, filename) {
   const storageRef = firebase.storage().ref();
   return storageRef.child(`${user.uid}/user_images/${filename}`).put(file);
 }
+
 //storageへアップロード(イベント)
 export function uploadToFirebaseStorageOfCompany(file, filename) {
   const user = firebase.auth().currentUser;

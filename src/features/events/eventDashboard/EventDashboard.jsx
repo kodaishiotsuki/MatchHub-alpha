@@ -43,7 +43,7 @@ const EventDashboard = () => {
 
   //ページング
   useEffect(() => {
-    if (retainState) return;
+    if (retainState) return; //保持状態を保つ
     setLoadingInitial(true);
     dispatch(fetchEvents(filter, startDate, limit)).then(() => {
       // setLastDocSnapShot(lastVisible);

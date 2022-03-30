@@ -6,7 +6,7 @@ import { setFilter } from "../eventActions";
 
 export default function EventFilter({ loading }) {
   const dispatch = useDispatch();
-  const {filter} = useSelector(state=>state.event)
+  const { filter } = useSelector((state) => state.event);
   const { authenticated } = useSelector((state) => state.auth);
   return (
     <>

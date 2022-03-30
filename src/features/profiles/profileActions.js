@@ -1,4 +1,5 @@
 import {
+  LISTEN_TO_COMPANY_PHOTOS,
   LISTEN_TO_CURRENT_USER_PROFILE,
   LISTEN_TO_FEED,
   LISTEN_TO_FOLLOWERS,
@@ -27,6 +28,12 @@ export function listenToSelectedUserProfile(profile) {
 export function listenToUserPhotos(photos) {
   return {
     type: LISTEN_TO_USER_PHOTOS,
+    payload: photos,
+  };
+}
+export function listenToCompanyPhotos(photos) {
+  return {
+    type: LISTEN_TO_COMPANY_PHOTOS,
     payload: photos,
   };
 }

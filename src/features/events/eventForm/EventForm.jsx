@@ -25,9 +25,9 @@ import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { careerData } from "../../../app/api/careerOptions";
-// import firebase from "../../../app/config/firebase";
 
-// const db = firebase.firestore();
+// import firebase from "../../../app/config/firebase";
+// import MyFileInput from "../../../app/common/form/MyFileInput";
 
 export default function EventForm({ match, history }) {
   const dispatch = useDispatch();
@@ -37,11 +37,6 @@ export default function EventForm({ match, history }) {
 
   const { selectedEvent } = useSelector((state) => state.event);
   const { loading, error } = useSelector((state) => state.async);
-
-  // const [text, setText] = useState('');
-  // const handleChange = (e) => {
-  //   setText(() => e.target.value);
-  // };
 
   //inputフォーム
   const initialValues = selectedEvent ?? {
@@ -59,23 +54,48 @@ export default function EventForm({ match, history }) {
       latLng: null,
     },
     date: "",
-    // companyPhotoURL: "",
+    companyPhotoURL: "",
   };
 
+  // const [image, setImage] = useState(null);
+  // const [errorMsg, setErrorMsg] = useState(false);
+
+  // const handleChange = (e) => {
+  //   if (e.target.files !== null) {
+  //     setImage(e.target.files[0]);
+  //   }
+  // };
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     // const user = firebase.auth().currentUser;
+  //     // const storageRef = firebase.storage().ref();
+  //     // return storageRef.child(`${user.uid}/company_images`).put(image);
+  //     const storageRef = firebase.storage().ref();
+  //     return storageRef
+  //       .child(`company_images/${image.name}`)
+  //       .put(image);
+  //   } catch (err) {
+  //     console.log(err);
+  //     setErrorMsg(true);
+  //   }
+  // };
+
   //入力画面バリデーション
-  // const validationSchema = Yup.object({
-  //   title: Yup.string().required("You must provide title"),
-  //   subTitle: Yup.string().required("You must provide subTitle"),
-  //   category: Yup.string().required("You must provide category"),
-  //   description: Yup.string().required("You must provide description"),
-  //   city: Yup.object().shape({
-  //     address: Yup.string().required("City is required"),
-  //   }),
-  //   venue: Yup.object().shape({
-  //     address: Yup.string().required("Venue is required"),
-  //   }),
-  //   date: Yup.string().required("You must provide date"),
-  // });
+  const validationSchema = Yup.object({
+    title: Yup.string().required("You must provide title"),
+    career: Yup.string().required("You must provide career"),
+    category: Yup.string().required("You must provide category"),
+    description: Yup.string().required("You must provide description"),
+    city: Yup.object().shape({
+      address: Yup.string().required("City is required"),
+    }),
+    venue: Yup.object().shape({
+      address: Yup.string().required("Venue is required"),
+    }),
+    date: Yup.string().required("You must provide date"),
+  });
 
   //
   async function handleCancelToggle(event) {
@@ -107,7 +127,7 @@ export default function EventForm({ match, history }) {
     <Segment clearing>
       {/* 入力はFORMIK使用 */}
       <Formik
-        // validationSchema={validationSchema}
+        validationSchema={validationSchema}
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
           try {
@@ -143,8 +163,11 @@ export default function EventForm({ match, history }) {
               options={careerData}
             />
             <MyTextArea name='description' placeholder='Description' rows={5} />
-            {/* <MyFileInput name='companyPhotoURL' />
-            <Image /> */}
+
+            {/* <input type='file' className='input' onChange={handleChange} /> */}
+
+            {/* <MyFileInput name='companyPhotoURL' placeholder='companyPhotoURL' /> */}
+            {/* <Image /> */}
             <Header sub color='teal' content='Company Location Details' />
             <MyPlaceInput name='city' placeholder='City' />
             <MyPlaceInput

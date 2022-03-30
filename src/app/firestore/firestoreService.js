@@ -165,29 +165,36 @@ export async function updateUserProfilePhoto(downloadURL, filename) {
   }
 }
 
-//firestore eventsコレクションに画像を保存
-// export async function updateEventProfilePhoto(downloadURL) {
-//   const user = firebase.auth().currentUser;
-//   const eventDocRef = db.collection("events").doc(user.uid);
-//   try {
-//     const eventDoc = await eventDocRef.get();
-//     if (!eventDoc.data().companyPhotoURL) {
-//       await db.collection("events").doc(user.uid).update({
-//         companyPhotoURL: downloadURL,
-//       });
-//     }
-//     return await db.collection("events").doc(user.uid).add({
-//       companyPhotoURL: downloadURL,
-//     });
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+// firestore eventsコレクションに画像を保存
+export async function updateEventProfilePhoto(downloadURL,eventId) {
+  // const user = firebase.auth().currentUser;
+  const eventDocRef = db.collection("events").doc(eventId);
+  try {
+    const eventDoc = await eventDocRef.get();
+    if (!eventDoc.data().companyPhotoURL) {
+      await db.collection("events").doc(eventId).update({
+        companyPhotoURL: downloadURL,
+      });
+    }
+    return await db.collection("events").doc(eventId).add({
+      companyPhotoURL: downloadURL,
+    });
+  } catch (error) {
+    throw error;
+  }
+}
 
 //ユーザーの写真を取得
 export function getUserPhotos(userUid) {
   return db.collection("users").doc(userUid).collection("photos");
 }
+
+//会社の写真を取得
+export function getCompanyPhotos(eventId) {
+  return db.collection("events").doc(eventId);
+}
+
+
 
 //メイン写真の設定
 export async function setMainPhoto(photo) {

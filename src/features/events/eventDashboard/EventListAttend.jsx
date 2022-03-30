@@ -4,8 +4,10 @@ import { List, Image } from "semantic-ui-react";
 
 export default function EventListAttend({ attendee }) {
   return (
-    <List.Item as={Link} to={`/profile/${attendee.id}`}>
-      <Image size='mini' circular src={attendee.photoURL} />
-    </List.Item>
+    <>
+      <List.Item as={Link} to={`/profile/${attendee.id}`}>
+        <Image size='mini' circular src={attendee.photoURL} />
+      </List.Item>
+    </>
   );
 }

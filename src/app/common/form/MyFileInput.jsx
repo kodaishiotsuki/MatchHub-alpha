@@ -3,14 +3,14 @@ import { useField } from "formik";
 import { FormField, Label } from "semantic-ui-react";
 import { uploadToFirebaseStorageOfCompany } from "../../firestore/firebaseService";
 import {
-  getUserPhotos,
+  getCompanyPhotos,
   updateEventProfilePhoto,
 } from "../../firestore/firestoreService";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import useFirestoreCollection from "../../hooks/useFirestoreCollection";
-import { listenToUserPhotos } from "../../../features/profiles/profileActions";
+import { listenToCompanyPhotos } from "../../../features/profiles/profileActions";
 
 export default function MyFileInput({ label, ...props }) {
   const dispatch = useDispatch();
@@ -20,8 +20,8 @@ export default function MyFileInput({ label, ...props }) {
 
   //firestore DBを使うために必要
   useFirestoreCollection({
-    query: () => getUserPhotos(), //firestoreのService
-    data: () => dispatch(listenToUserPhotos(photos)), //Redux action
+    query: () => getCompanyPhotos(), //firestoreのService
+    data: () => dispatch(listenToCompanyPhotos(photos)), //Redux action
     deps: [dispatch], //依存関係
   });
 
@@ -42,7 +42,7 @@ export default function MyFileInput({ label, ...props }) {
         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
           updateEventProfilePhoto(downloadURL)
             .then(() => {
-              // setImage(true);
+              setImage(true);
             })
             .catch((error) => {
               toast.error(error.message);

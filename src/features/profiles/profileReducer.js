@@ -1,5 +1,6 @@
 import {
   CLEAR_FOLLOWINGS,
+  LISTEN_TO_COMPANY_PHOTOS,
   LISTEN_TO_CURRENT_USER_PROFILE,
   LISTEN_TO_FEED,
   LISTEN_TO_FOLLOWERS,
@@ -38,6 +39,11 @@ export default function profileReducer(
         selectedUserProfile: payload,
       };
     case LISTEN_TO_USER_PHOTOS:
+      return {
+        ...state,
+        photos: payload,
+      };
+    case LISTEN_TO_COMPANY_PHOTOS:
       return {
         ...state,
         photos: payload,
