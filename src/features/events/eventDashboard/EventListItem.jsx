@@ -11,7 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import EventListAttend from "./EventListAttend";
 import { format } from "date-fns";
-import { deleteEventInFirestore } from "../../../app/firestore/firestoreService";
+// import { deleteEventInFirestore } from "../../../app/firestore/firestoreService";
 
 export default function EventListItem({ event }) {
   return (
@@ -76,12 +76,12 @@ export default function EventListItem({ event }) {
       </Segment>
       <Segment clearing>
         <div>{event.description}</div>
-        <Button
+        {/* <Button
           onClick={() => deleteEventInFirestore(event.id)}
           color='red'
           floated='right'
           content='Delete'
-        />
+        /> */}
         <Button
           as={Link}
           to={`/events/${event.id}`} //イベント内容詳細ページへ遷移（idで判断）

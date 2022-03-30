@@ -4,7 +4,7 @@ import { Button, Confirm, Header, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { listenToSelectedEvents } from "../eventActions";
+import { clearSelectedEvents, listenToSelectedEvents } from "../eventActions";
 
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -25,11 +25,12 @@ import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { careerData } from "../../../app/api/careerOptions";
+import { useEffect } from "react";
 
 // import firebase from "../../../app/config/firebase";
 // import MyFileInput from "../../../app/common/form/MyFileInput";
 
-export default function EventForm({ match, history }) {
+export default function EventForm({ match, history, location }) {
   const dispatch = useDispatch();
 
   const [loadingCancel, setLoadingCancel] = useState(false);
@@ -37,6 +38,13 @@ export default function EventForm({ match, history }) {
 
   const { selectedEvent } = useSelector((state) => state.event);
   const { loading, error } = useSelector((state) => state.async);
+
+  //新規会社登録画面をクリア
+  useEffect(() => {
+    //EventFormコンポーネント,props,location,pathname
+    if (location.pathname !== "/createEvent") return;
+    dispatch(clearSelectedEvents()); //dispatchでeventAction呼び出し
+  }, [dispatch, location.pathname]);
 
   //inputフォーム
   const initialValues = selectedEvent ?? {
@@ -97,7 +105,7 @@ export default function EventForm({ match, history }) {
     date: Yup.string().required("You must provide date"),
   });
 
-  //
+  //キャンセルボタンクリック時のアクション
   async function handleCancelToggle(event) {
     setConfirmOpen(false);
     setLoadingCancel(true);
@@ -112,7 +120,9 @@ export default function EventForm({ match, history }) {
 
   //eventsコレクションのidに紐付ける(データの受け取り)
   useFirestoreDoc({
-    shouldExecute: !!match.params.id,
+    shouldExecute:
+      match.params.id !== selectedEvent?.id && //store内で選択したイベントと異なる時
+      location.pathname !== "/createEvent", //パス名が異なる時
     query: () => listenToEventFromFirestore(match.params.id),
     data: (event) => dispatch(listenToSelectedEvents(event)),
     deps: [match.params.id, dispatch],
@@ -127,6 +137,7 @@ export default function EventForm({ match, history }) {
     <Segment clearing>
       {/* 入力はFORMIK使用 */}
       <Formik
+        enableReinitialize
         validationSchema={validationSchema}
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
@@ -184,6 +195,7 @@ export default function EventForm({ match, history }) {
               name='date'
               placeholder='Date of founded'
               dateFormat='yyyy/MM/dd'
+              autoComplete='off'
             />
 
             {selectedEvent && (
